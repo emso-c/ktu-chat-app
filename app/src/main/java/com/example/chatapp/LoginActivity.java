@@ -118,6 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 signInWithEmailAndPassword(email, password);
+                login("0");
             } else {
                 Toast.makeText(
                         getApplicationContext(),
@@ -144,6 +145,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 createAccountWithEmailAndPassword(email, password);
+                login("0");
             } else {
                 Toast.makeText(
                         getApplicationContext(),
@@ -204,8 +206,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if(mAuth.getCurrentUser() != null){
-            // TODO user already logged in, redirect
+        if(user != null){
+            login("0");
         }
     }
 
@@ -219,6 +221,7 @@ public class LoginActivity extends AppCompatActivity {
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
             user = FirebaseAuth.getInstance().getCurrentUser();
+            login("0");
             // ...
         } else {
             // Sign in failed. If response is null the user canceled the
@@ -240,5 +243,12 @@ public class LoginActivity extends AppCompatActivity {
                 .setAvailableProviders(providers)
                 .build();
         signInLauncher.launch(signInIntent);
+    }
+
+    public void login(String id){
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        // TODO get id programmatically
+        intent.putExtra("user_id", id);
+        startActivity(intent);
     }
 }

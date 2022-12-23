@@ -7,4 +7,7 @@
     <string name="log_in_btn">Log In</string>
     <string name="password_btn">Password</string>
     <string name="email_address_btn">Email Address</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 </resources>
