@@ -24,8 +24,15 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseUser user;
+    UserManager manager = UserManager.getInstance();
+    private FirebaseUser user = manager.user;
     private FirebaseAuth mAuth;
+
+    private TextInputLayout tilEmail;
+    private TextInputLayout tilPassword;
+
+    private EditText editTextEmail;
+    private EditText editTextPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +94,19 @@ public class LoginActivity extends AppCompatActivity {
                 EditText editTextPassword = findViewById(R.id.editTextPassword);
                 String email = editTextEmail.getText().toString();
                 String password = editTextPassword.getText().toString();
+
+                if (email.isEmpty()){
+                    tilEmail.setError("Email cannot be empty");
+                    return;
+                }
+                if (password.isEmpty()) {
+                    tilPassword.setError("Password cannot be empty");
+                    return;
+                }
+                if (password.length() < 6) {
+                    tilPassword.setError("Password length should be at least 6");
+                    return;
+                }
                 signInWithEmailAndPassword(email, password);
             } else {
                 Toast.makeText(
@@ -103,6 +123,19 @@ public class LoginActivity extends AppCompatActivity {
                 EditText editTextPassword = findViewById(R.id.editTextPassword);
                 String email = editTextEmail.getText().toString();
                 String password = editTextPassword.getText().toString();
+
+                if (email.isEmpty()){
+                    tilEmail.setError("Email cannot be empty");
+                    return;
+                }
+                if (password.isEmpty()) {
+                    tilPassword.setError("Password cannot be empty");
+                    return;
+                }
+                if (password.length() < 6) {
+                    tilPassword.setError("Password length should be at least 6");
+                    return;
+                }
                 createAccountWithEmailAndPassword(email, password);
             } else {
                 Toast.makeText(
@@ -112,6 +145,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        editTextEmail.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                tilEmail.setError(null);
+            }
+        });
+        editTextPassword.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                tilPassword.setError(null);
+            }
+        });
     }
 
     private void createAccountWithEmailAndPassword(String email, String password) {
