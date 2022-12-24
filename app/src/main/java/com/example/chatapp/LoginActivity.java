@@ -209,6 +209,9 @@ public class LoginActivity extends AppCompatActivity {
         if(user != null){
             login("0");
         }
+        // TODO TEMP REMOVE THIS LINE
+        // TODO consider storing login info in sqlite
+        login("0");
     }
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
