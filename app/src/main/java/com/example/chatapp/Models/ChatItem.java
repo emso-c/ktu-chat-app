@@ -1,9 +1,9 @@
 package com.example.chatapp.Models;
 
-public class User {
+public class ChatItem {
     public String id, uuid, profilePic, name, lastMessage, lastMessageDate, unseenMessages;
 
-    public User(String id, String uuid, String profile_pic, String name, String last_message, String last_message_date, String unseenMessages) {
+    public ChatItem(String id, String uuid, String profile_pic, String name, String last_message, String last_message_date, String unseenMessages) {
         this.id = id;
         this.uuid = uuid;
         this.profilePic = profile_pic;
