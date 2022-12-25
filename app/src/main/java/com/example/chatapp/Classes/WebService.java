@@ -1,12 +1,19 @@
 package com.example.chatapp.Classes;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.chatapp.Models.ChatHistory;
 import com.example.chatapp.Models.ChatItem;
 import com.example.chatapp.Models.UserManager;
 import com.example.chatapp.Models.WebServiceMessage;
 import com.example.chatapp.Models.WebServiceUser;
+import com.example.chatapp.R;
+import com.here.oksse.OkSse;
+import com.here.oksse.ServerSentEvent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import okhttp3.Request;
 import okhttp3.Response;
 
 public class WebService {
