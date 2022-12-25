@@ -3,6 +3,7 @@ package com.example.chatapp;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.chatapp.Classes.WebService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -10,7 +11,7 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.chatapp.Classes.UserManager;
+import com.example.chatapp.Models.UserManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
