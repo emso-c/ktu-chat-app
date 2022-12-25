@@ -45,58 +45,28 @@ public class ChatFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         binding.chatRecyclerView.setLayoutManager(layoutManager);
 
-        userList.add(
-                new User(
-                        "1",
-                        "12j3ejkfdh24",
-                        "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-                        "Ahmet Mehmet",
-                        "Selam",
-                        "24.12.2022",
-                        "2"
-                )
+        webService = new WebService(
+                getString(R.string.hostname),
+                getString(R.string.port),
+                UserManager.getInstance()
         );
-        /*
-        userList.add(
-                new User(
-                        "1",
-                        "12j3ejkfdh24",
-                        "", // TODO validate
-                        "Ahmet Mehmet",
-                        "Selam",
-                        "24.12.2022"
-                        "0"
-                )
-        );*/
 
-        userList.add(new User(
-                "1",
-                "12j3ejkfdh24",
-                "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-                "Ahmet Mehmet",
-                "Selam",
-                "24.12.2022",
-                "0"
-        ));
-        userList.add(new User(
-                "1",
-                "12j3ejkfdh24",
-                "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-                "Ahmet Mehmet",
-                "Selam",
-                "24.12.2022",
-                "2"
-        ));
-        userList.add(new User(
-            "1",
-            "12j3ejkfdh24",
-            "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-            "Ahmet Mehmet",
-            "Selam",
-            "24.12.2022",
-            "2"
-        ));
-        adapter.notifyDataSetChanged();
+        ArrayList<ChatHistory> chatHistoryArrayList = webService.getChatHistory();
+        for (ChatHistory chatHistory: chatHistoryArrayList){
+            chatItemArrayList.add(
+                    new ChatItem(
+                            chatHistory.chatInfo.id,
+                            chatHistory.chatInfo.uuid,
+                            "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+                            chatHistory.chatInfo.name,
+                            chatHistory.chatInfo.lastMessage,
+                            chatHistory.chatInfo.lastMessageDate,
+                            chatHistory.chatInfo.unseenMessages
+                    )
+            );
+        }
+        adapter.notifyItemRangeInserted(0, chatHistoryArrayList.size()-1);
+
         return binding.getRoot();
     }
 
