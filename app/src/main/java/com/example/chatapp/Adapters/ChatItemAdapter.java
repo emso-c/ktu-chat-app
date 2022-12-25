@@ -49,7 +49,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
         if (!chatItem.unseenMessages.equals("0")){
             holder.unseen_messages.setText(chatItem.unseenMessages);
         } else {
-            holder.unseen_messages.setVisibility(View.GONE);
+            holder.unseen_messages.setVisibility(View.INVISIBLE);
         }
     }
 
