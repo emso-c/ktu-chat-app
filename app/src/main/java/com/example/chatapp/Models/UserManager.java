@@ -1,4 +1,4 @@
-package com.example.chatapp.Classes;
+package com.example.chatapp.Models;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -7,6 +7,13 @@ import com.google.firebase.auth.FirebaseUser;
 public class UserManager {
     private static volatile UserManager INSTANCE = null;
     public FirebaseUser user = null;
+    public String id = "";
+    public String uid = "";
+    public String profilePic = "";
+    public String username = "";
+    public String password = "";
+    public String email = "";
+    public String phoneNumber = "";
 
     private UserManager() {}
 
