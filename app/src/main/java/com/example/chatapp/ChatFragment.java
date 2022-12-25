@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.chatapp.Adapters.ChatItemAdapter;
 import com.example.chatapp.Classes.ChatHistoryComparator;
@@ -37,6 +38,7 @@ public class ChatFragment extends Fragment {
 
     ChatItemAdapter adapter;
     LinearLayoutManager layoutManager;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
     @Override
@@ -75,6 +77,8 @@ public class ChatFragment extends Fragment {
         };
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver, filter);
 
+        swipeRefreshLayout = binding.getRoot().findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(this::renderChatMenuUI);
         return binding.getRoot();
     }
 
@@ -96,6 +100,8 @@ public class ChatFragment extends Fragment {
             );
         }
         adapter.notifyDataSetChanged();
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
