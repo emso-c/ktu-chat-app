@@ -44,4 +44,24 @@ public class Helpers {
         }
         return "";
     }
+
+    public static int compareDates(String date1, String date2){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        Date d1 = null;
+        Date d2 = null;
+        try {
+            d1 = sdf.parse(date1);
+            d2 = sdf.parse(date2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (d1.compareTo(d2) < 0) {
+            return 1;
+        } else if (d1.compareTo(d2) > 0) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 }
