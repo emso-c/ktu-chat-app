@@ -28,7 +28,6 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity {
 
     UserManager manager = UserManager.getInstance();
-    private FirebaseUser user = manager.user;
     private FirebaseAuth mAuth;
 
     private TextInputLayout tilEmail;
@@ -58,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         btnSignIn.setOnClickListener(view -> {
-            if (user == null){
+            if (manager.user == null){
                 createSignInIntent();
             } else{
                 Toast.makeText(
@@ -69,10 +68,10 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         btnInfo.setOnClickListener(view -> {
-            if (user != null){
+            if (manager.user != null){
                 Toast.makeText(
                         getApplicationContext(),
-                        user.getUid(),
+                        manager.user.getUid(),
                         Toast.LENGTH_SHORT).show();
             } else{
                 Toast.makeText(
@@ -83,9 +82,9 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         btnSignOut.setOnClickListener(view -> {
-            if (user != null){
+            if (manager.user != null){
                 FirebaseAuth.getInstance().signOut();
-                user = null;
+                manager.user = null;
                 //Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                 Toast.makeText(
                         getApplicationContext(),
@@ -101,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // EMAIL AND PASS AUTH
         btnLoginEmailPass.setOnClickListener(view -> {
-            if (user == null){
+            if (manager.user == null){
                 String email = editTextEmail.getText().toString();
                 String password = editTextPassword.getText().toString();
 
@@ -128,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         btnSignUpEmailPass.setOnClickListener(view -> {
-            if (user == null){
+            if (manager.user == null){
                 String email = editTextEmail.getText().toString();
                 String password = editTextPassword.getText().toString();
 
@@ -193,7 +192,8 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()){
                         Log.d(TAG, "signInUserWithEmail:success");
-                        user = mAuth.getCurrentUser();
+                        manager.user = mAuth.getCurrentUser();
+                        login();
                     } else {
                         Log.w(TAG, "signInUserWithEmail:failure", task.getException());
                         Toast.makeText(LoginActivity.this, "Authentication failed.",
@@ -206,8 +206,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if(user != null){
-            login("0");
+        if(manager.user != null){
+            login();
         }
         // TODO TEMP REMOVE THIS LINE
         // TODO consider storing login info in sqlite
@@ -223,8 +223,8 @@ public class LoginActivity extends AppCompatActivity {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
-            user = FirebaseAuth.getInstance().getCurrentUser();
-            login("0");
+            manager.user = FirebaseAuth.getInstance().getCurrentUser();
+            login();
             // ...
         } else {
             // Sign in failed. If response is null the user canceled the

@@ -10,19 +10,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.chatapp.Models.User;
+import com.example.chatapp.Classes.Helpers;
+import com.example.chatapp.Models.ChatItem;
 import com.example.chatapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
+public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHolder> {
 
-    ArrayList<User> userList;
+    ArrayList<ChatItem> chatItemList;
     Context context;
 
-    public UserAdapter(ArrayList<User> user_list, Context context) {
-        this.userList = user_list;
+    public ChatItemAdapter(ArrayList<ChatItem> chatItem_list, Context context) {
+        this.chatItemList = chatItem_list;
         this.context = context;
     }
 
@@ -37,16 +38,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        User user = userList.get(position);
+        ChatItem chatItem = chatItemList.get(position);
         Picasso.get()
-                .load(user.profilePic)
+                .load(chatItem.profilePic)
                 .placeholder(com.firebase.ui.auth.R.drawable.fui_ic_anonymous_white_24dp)
                 .into(holder.image);
-        holder.name.setText(user.name);
-        holder.last_message.setText(user.lastMessage);
-        holder.last_message_date.setText(user.lastMessageDate);
-        if (!user.unseenMessages.equals("0")){
-            holder.unseen_messages.setText(user.unseenMessages);
+        holder.name.setText(chatItem.name);
+        holder.last_message.setText(chatItem.lastMessage);
+        holder.last_message_date.setText(Helpers.parseDate(chatItem.lastMessageDate));
+        if (!chatItem.unseenMessages.equals("0")){
+            holder.unseen_messages.setText(chatItem.unseenMessages);
         } else {
             holder.unseen_messages.setVisibility(View.GONE);
         }
@@ -54,7 +55,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return userList.size();
+        return chatItemList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -70,7 +71,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             last_message = itemView.findViewById(R.id.last_message);
             last_message_date = itemView.findViewById(R.id.last_message_date);
             unseen_messages = itemView.findViewById(R.id.unseen_messages);
-
         }
 
         @Override
