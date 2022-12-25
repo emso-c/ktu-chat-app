@@ -48,7 +48,8 @@ public class ChatFragment extends Fragment {
         webService = new WebService(
                 getString(R.string.hostname),
                 getString(R.string.port),
-                UserManager.getInstance()
+                UserManager.getInstance(),
+                getContext()
         );
 
         ArrayList<ChatHistory> chatHistoryArrayList = webService.getChatHistory();

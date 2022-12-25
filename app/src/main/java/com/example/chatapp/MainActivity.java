@@ -71,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
             WebService webService = new WebService(
                     getString(R.string.hostname),
                     getString(R.string.port),
-                    UserManager.getInstance()
+                    UserManager.getInstance(),
+                    this
             );
             webService.logout();
 
