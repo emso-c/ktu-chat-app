@@ -115,7 +115,6 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 signInWithEmailAndPassword(email, password);
-                login("0");
             } else {
                 Toast.makeText(
                         getApplicationContext(),
@@ -142,7 +141,6 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 createAccountWithEmailAndPassword(email, password);
-                login("0");
             } else {
                 Toast.makeText(
                         getApplicationContext(),
@@ -169,11 +167,10 @@ public class LoginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "createUserWithEmail:success");
-                        user = mAuth.getCurrentUser();
+                        manager.user = mAuth.getCurrentUser();
                         Toast.makeText(LoginActivity.this, "Created Account",
                                 Toast.LENGTH_SHORT).show();
-                        // TODO redirect user
-                        // updateUI(user);
+                        login();
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -207,9 +204,7 @@ public class LoginActivity extends AppCompatActivity {
         if(manager.user != null){
             login();
         }
-        // TODO TEMP REMOVE THIS LINE
         // TODO consider storing login info in sqlite
-        login("0");
     }
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
@@ -246,10 +241,17 @@ public class LoginActivity extends AppCompatActivity {
         signInLauncher.launch(signInIntent);
     }
 
-    public void login(String id){
+    public void login(){
+        if (manager.user == null)
+            return;
+
+        manager.uid = manager.user.getUid();
+        manager.profilePic = String.valueOf(manager.user.getPhotoUrl());
+        manager.username = manager.user.getDisplayName();
+        manager.password = "1234";
+        manager.email = manager.user.getEmail();
+        manager.phoneNumber = manager.user.getPhoneNumber();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        // TODO get id programmatically
-        intent.putExtra("user_id", id);
         startActivity(intent);
     }
 }
