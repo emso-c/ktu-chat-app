@@ -1,6 +1,10 @@
 package com.example.chatapp.Models;
 
-public class WebServiceMessage {
+import java.io.ObjectStreamClass;
+import java.io.Serializable;
+
+public class WebServiceMessage implements Serializable {
+    private static final long serialVersionUID = ObjectStreamClass.lookup(WebServiceMessage.class).getSerialVersionUID();
     public int id;
     public int fromID;
     public int toID;
