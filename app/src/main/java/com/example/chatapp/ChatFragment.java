@@ -12,8 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.chatapp.Adapters.UserAdapter;
-import com.example.chatapp.Models.User;
+import com.example.chatapp.Adapters.ChatItemAdapter;
+import com.example.chatapp.Classes.WebService;
+import com.example.chatapp.Models.ChatHistory;
+import com.example.chatapp.Models.ChatItem;
+import com.example.chatapp.Models.UserManager;
 import com.example.chatapp.databinding.FragmentChatBinding;
 
 import java.util.ArrayList;
