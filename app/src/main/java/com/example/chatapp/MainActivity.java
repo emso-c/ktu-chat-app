@@ -67,7 +67,13 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.logout_option){
             UserManager manager = UserManager.getInstance();
             manager.user = null;
-            // TODO consider closing web server connection too
+            WebService webService = new WebService(
+                    getString(R.string.hostname),
+                    getString(R.string.port),
+                    UserManager.getInstance()
+            );
+            webService.logout();
+
             Intent intent = new Intent(this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
