@@ -23,8 +23,10 @@ import okhttp3.Response;
 public class WebService {
     public RequestHandler handler;
     public WebServiceUser webServiceUser;
+    private Context context;
 
-    public WebService(String hostname, String port, UserManager manager) {
+    public WebService(String hostname, String port, UserManager manager, Context context) {
+        this.context = context;
         this.handler = new RequestHandler(hostname, port);
         this.webServiceUser = this.getUserByFirebaseUID(manager.uid);
         if(webServiceUser == null){
