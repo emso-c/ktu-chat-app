@@ -25,7 +25,8 @@ import java.util.ArrayList;
 public class ChatFragment extends Fragment {
 
     FragmentChatBinding binding;
-    ArrayList<User> userList = new ArrayList<>();
+    ArrayList<ChatItem> chatItemArrayList = new ArrayList<>();
+    WebService webService;
 
 
     @Override
