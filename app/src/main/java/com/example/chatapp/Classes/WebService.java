@@ -233,4 +233,65 @@ public class WebService {
 
         return user;
     }
+
+    public void listen_messages(Context context){
+        // source: https://www.youtube.com/watch?v=p0E3vNY1jtE
+        String url = this.context.getString(R.string.hostname)+":"+context.getString(R.string.port)+"/message-stream?_id="+ webServiceUser.id;
+        Request request = new Request.Builder().url(url).build();
+        OkSse okSse = new OkSse();
+        ServerSentEvent sse = okSse.newServerSentEvent(request, new ServerSentEvent.Listener() {
+            @Override
+            public void onOpen(ServerSentEvent sse, Response response) {
+                Log.d("SSE", "onOpen");
+            }
+
+            @Override
+            public void onMessage(ServerSentEvent sse, String id, String event, String message) {
+                Log.d("SSE", "onMessage: " + message);
+                try {
+                    if (event.equals("message")){
+                        JSONObject jsonObject = new JSONObject(message);
+                        int fromID = jsonObject.getInt("fromID");
+                        int toID = jsonObject.getInt("toID");
+                        String content = jsonObject.getString("content");
+                        String date = jsonObject.getString("date");
+
+                        WebServiceMessage webServiceMessage = new WebServiceMessage(0, fromID, toID, content, date);
+                        Intent intent = new Intent("new-message");
+                        intent.putExtra("message", webServiceMessage);
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onComment(ServerSentEvent sse, String comment) {
+                Log.d("SSE", "onComment: " + comment);
+            }
+
+            @Override
+            public boolean onRetryTime(ServerSentEvent sse, long milliseconds) {
+                Log.d("SSE", "onRetryTime: " + milliseconds);
+                return false;
+            }
+
+            @Override
+            public boolean onRetryError(ServerSentEvent sse, Throwable throwable, Response response) {
+                Log.d("SSE", "onRetryError: " + throwable.getMessage());
+                return false;
+            }
+
+            @Override
+            public void onClosed(ServerSentEvent sse) {
+                Log.d("SSE", "onClosed");
+            }
+
+            @Override
+            public Request onPreRetry(ServerSentEvent sse, Request originalRequest) {
+                return null;
+            }
+        });
+    }
 }
