@@ -120,7 +120,7 @@ public class ChatActivity extends AppCompatActivity {
         int oldChatMessageSize = chatMessages.size();
         chatMessages.clear();
         for (WebServiceMessage message: chatHistory.messages){
-            if(message.id != user.id && !message.seen)
+            if(message.fromID != webService.webServiceUser.id && !message.seen)
                 webService.setSeen(message.id);
             chatMessages.add(message);
         }
