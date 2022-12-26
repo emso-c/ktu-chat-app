@@ -73,19 +73,30 @@ public class MainActivity extends AppCompatActivity {
 
     public void logoutOptionSelected(MenuItem item) {
         if (item.getItemId() == R.id.logout_option){
-            UserManager manager = UserManager.getInstance();
-            manager.user = null;
-            WebService webService = new WebService(
-                    getString(R.string.hostname),
-                    getString(R.string.port),
-                    UserManager.getInstance(),
-                    this
-            );
-            webService.logout();
-
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            logout();
         }
+    }
+
+    public void logout(){
+        UserManager manager = UserManager.getInstance();
+        manager.user = null;
+        WebService webService = new WebService(
+                getString(R.string.hostname),
+                getString(R.string.port),
+                UserManager.getInstance(),
+                this
+        );
+        webService.logout();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        logout();
     }
 }
