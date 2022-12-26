@@ -340,6 +340,12 @@ public class WebService {
                         intent.putExtra("message", webServiceMessage);
                         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                     }
+                    else if (event.equals("seen")){
+                        Log.d("SSE", "onSeen: " + message);
+                        Intent intent = new Intent("new-message");
+                        intent.putExtra("message", "seen");
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
