@@ -12,6 +12,8 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chatapp.Models.UserManager;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,16 +89,14 @@ public class MainActivity extends AppCompatActivity {
                 this
         );
         webService.logout();
-
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        finish();
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.e("EE", "MAINACTIVITY DESTROYED");
         logout();
     }
 }
