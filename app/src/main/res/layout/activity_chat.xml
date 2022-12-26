@@ -9,7 +9,7 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/blue_dark">
+        android:background="@color/blue_ultra_dark">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -88,8 +88,11 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:scrollbars="vertical"
+                android:clipToPadding="false"
+                android:layout_below="@id/chatAppBarLayout"
+                android:layout_above="@+id/chat_input_layout"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <LinearLayout
@@ -101,7 +104,6 @@
                 android:layout_margin="10dp"
                 tools:ignore="ObsoleteLayoutParam"
                 android:gravity="center">
-
                 <EditText
                     android:id="@+id/message_input"
                     android:layout_width="0dp"
@@ -113,7 +115,6 @@
                     android:textColorHint="@color/bright_grey"
                     android:background="@drawable/rounded_edittext"
                     android:elevation="20dp"/>
-
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/send_button"
                     android:layout_width="50dp"
@@ -131,7 +132,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
             </LinearLayout>
-
 
         </RelativeLayout>
 
