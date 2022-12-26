@@ -8,7 +8,8 @@
     android:paddingHorizontal="4dp"
     android:paddingVertical="3dp"
     android:orientation="vertical"
-    android:layout_margin="3dp">
+    android:layout_marginHorizontal="9dp"
+    android:layout_marginVertical="7dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -25,7 +26,9 @@
             android:maxLines="30"
             android:padding="5dp"
             android:maxWidth="270dp"
-            android:text="Sample message"/>
+            android:minWidth="100dp"
+            android:text="Sample message"
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
     <LinearLayout
@@ -42,7 +45,7 @@
             android:textColor="@color/white"
             android:maxLines="1"
             android:text="11:12"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,SmallSp" />
 
         <TextView
             android:id="@+id/seen_info"
@@ -53,7 +56,7 @@
             android:maxLines="1"
             android:layout_marginStart="8dp"
             android:text="✔✔"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,SmallSp" />
     </LinearLayout>
 
 
