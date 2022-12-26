@@ -95,7 +95,8 @@ public class ChatFragment extends Fragment {
                             chatHistory.chatInfo.name,
                             chatHistory.chatInfo.lastMessage,
                             chatHistory.chatInfo.lastMessageDate,
-                            chatHistory.chatInfo.unseenMessages
+                            chatHistory.chatInfo.unseenMessages,
+                            chatHistory.chatInfo.lastSeen
                     )
             );
         }
