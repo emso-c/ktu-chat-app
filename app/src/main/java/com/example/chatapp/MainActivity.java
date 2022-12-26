@@ -1,6 +1,5 @@
 package com.example.chatapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.chatapp.Classes.WebService;
@@ -11,7 +10,7 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.chatapp.Models.UserManager;
+import com.example.chatapp.Models.FirebaseUserInstance;
 
 import android.util.Log;
 import android.view.Menu;
@@ -80,12 +79,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logout(){
-        UserManager manager = UserManager.getInstance();
+        FirebaseUserInstance manager = FirebaseUserInstance.getInstance();
         manager.user = null;
         WebService webService = new WebService(
                 getString(R.string.hostname),
                 getString(R.string.port),
-                UserManager.getInstance(),
+                FirebaseUserInstance.getInstance(),
                 this
         );
         webService.logout();

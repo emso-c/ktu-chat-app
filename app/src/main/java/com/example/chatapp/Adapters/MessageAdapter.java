@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapp.Classes.Helpers;
-import com.example.chatapp.Models.UserManager;
+import com.example.chatapp.Models.FirebaseUserInstance;
 import com.example.chatapp.Models.WebServiceMessage;
 import com.example.chatapp.R;
 
@@ -84,7 +84,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         // If the current user is the sender of the message
 
-        if (String.valueOf(message.fromID).equals(UserManager.getInstance().id)) {
+        if (String.valueOf(message.fromID).equals(FirebaseUserInstance.getInstance().id)) {
             return VIEW_TYPE_MESSAGE_RIGHT;
         } else {
             // The current user is not the sender of the message

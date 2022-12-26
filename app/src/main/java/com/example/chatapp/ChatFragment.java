@@ -24,7 +24,7 @@ import com.example.chatapp.Classes.ChatHistoryComparator;
 import com.example.chatapp.Classes.WebService;
 import com.example.chatapp.Models.ChatHistory;
 import com.example.chatapp.Models.ChatItem;
-import com.example.chatapp.Models.UserManager;
+import com.example.chatapp.Models.FirebaseUserInstance;
 import com.example.chatapp.databinding.FragmentChatBinding;
 
 import java.util.ArrayList;
@@ -62,11 +62,11 @@ public class ChatFragment extends Fragment  {
         webService = new WebService(
                 getString(R.string.hostname),
                 getString(R.string.port),
-                UserManager.getInstance(),
+                FirebaseUserInstance.getInstance(),
                 getContext()
         );
 
-        UserManager.getInstance().id = String.valueOf(webService.webServiceUser.id);
+        FirebaseUserInstance.getInstance().id = String.valueOf(webService.webServiceUser.id);
         this.renderChatMenuUI();
         webService.listen_messages(requireContext());
 

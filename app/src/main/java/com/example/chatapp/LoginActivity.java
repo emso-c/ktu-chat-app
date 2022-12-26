@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.chatapp.Models.UserManager;
+import com.example.chatapp.Models.FirebaseUserInstance;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
@@ -25,7 +25,7 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
-    UserManager manager = UserManager.getInstance();
+    FirebaseUserInstance manager = FirebaseUserInstance.getInstance();
     private FirebaseAuth mAuth;
 
     private TextInputLayout tilEmail;

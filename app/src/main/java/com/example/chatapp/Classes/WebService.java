@@ -8,7 +8,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.chatapp.Models.ChatHistory;
 import com.example.chatapp.Models.ChatItem;
-import com.example.chatapp.Models.UserManager;
+import com.example.chatapp.Models.FirebaseUserInstance;
 import com.example.chatapp.Models.WebServiceMessage;
 import com.example.chatapp.Models.WebServiceUser;
 import com.example.chatapp.R;
@@ -33,7 +33,7 @@ public class WebService {
     public WebServiceUser webServiceUser;
     private Context context;
 
-    public WebService(String hostname, String port, UserManager manager, Context context) {
+    public WebService(String hostname, String port, FirebaseUserInstance manager, Context context) {
         this.context = context;
         this.handler = new RequestHandler(hostname, port);
         this.webServiceUser = this.getUserByFirebaseUID(manager.uid);

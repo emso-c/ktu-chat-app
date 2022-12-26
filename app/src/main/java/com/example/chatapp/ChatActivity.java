@@ -17,10 +17,9 @@ import com.example.chatapp.Adapters.MessageAdapter;
 import com.example.chatapp.Classes.Helpers;
 import com.example.chatapp.Classes.WebService;
 import com.example.chatapp.Models.ChatHistory;
-import com.example.chatapp.Models.UserManager;
+import com.example.chatapp.Models.FirebaseUserInstance;
 import com.example.chatapp.Models.WebServiceMessage;
 import com.example.chatapp.Models.WebServiceUser;
-import com.example.chatapp.databinding.ActivityChatBinding;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -52,7 +51,7 @@ public class ChatActivity extends AppCompatActivity {
         webService = new WebService(
                 getString(R.string.hostname),
                 getString(R.string.port),
-                UserManager.getInstance(),
+                FirebaseUserInstance.getInstance(),
                 this
         );
 

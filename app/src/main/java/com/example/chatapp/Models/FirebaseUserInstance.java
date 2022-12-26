@@ -4,8 +4,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 
 
-public class UserManager {
-    private static volatile UserManager INSTANCE = null;
+public class FirebaseUserInstance {
+    private static volatile FirebaseUserInstance INSTANCE = null;
     public FirebaseUser user = null;
     public String id = "";
     public String uid = "";
@@ -15,13 +15,13 @@ public class UserManager {
     public String email = "";
     public String phoneNumber = "";
 
-    private UserManager() {}
+    private FirebaseUserInstance() {}
 
-    public static UserManager getInstance() {
+    public static FirebaseUserInstance getInstance() {
         if(INSTANCE == null) {
-            synchronized (UserManager.class) {
+            synchronized (FirebaseUserInstance.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new UserManager();
+                    INSTANCE = new FirebaseUserInstance();
                 }
             }
         }
