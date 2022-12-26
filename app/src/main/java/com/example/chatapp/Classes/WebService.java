@@ -243,7 +243,7 @@ public class WebService {
             }
 
             String username = chatObject.getString("username");
-            int id = chatObject.getInt("id");
+            int id = chatObject.getInt("user_id");
             String firebaseUid = chatObject.getString("firebase_uid");
             String lastMessage = chatObject.getString("last_message");
             String lastMessageDate = chatObject.getString("last_message_date");
@@ -271,6 +271,11 @@ public class WebService {
             user.username = jsonObject.getString("name");
             user.password = jsonObject.getString("password");
             user.firebaseUid = jsonObject.getString("firebase_uid");
+            user.lastSeen = jsonObject.getString("last_seen");
+            user.photoUrl = jsonObject.getString("photo_url");
+            user.isOnline = Boolean.valueOf(jsonObject.getString("is_online"));
+            user.isTyping = Boolean.valueOf(jsonObject.getString("is_typing"));
+            user.status = jsonObject.getString("status");
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -292,7 +297,10 @@ public class WebService {
             user.password = jsonObject.getString("password");
             user.firebaseUid = jsonObject.getString("firebase_uid");
             user.lastSeen = jsonObject.getString("last_seen");
-
+            user.photoUrl = jsonObject.getString("photo_url");
+            user.isOnline = jsonObject.getString("is_online").equals("1");
+            user.isTyping = Boolean.valueOf(jsonObject.getString("is_typing"));
+            user.status = jsonObject.getString("status");
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
@@ -314,8 +322,8 @@ public class WebService {
             @Override
             public void onMessage(ServerSentEvent sse, String id, String event, String message) {
                 try {
-                    Log.d("SSE", "onMessage: " + message);
                     if (event.equals("message")){
+                        Log.d("SSE", "onMessage: " + message);
                         JSONObject jsonObject = new JSONObject(message);
                         int fromID = jsonObject.getInt("fromID");
                         int toID = jsonObject.getInt("toID");
