@@ -1,5 +1,7 @@
 package com.example.chatapp;
 
+import android.app.ActivityManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +16,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,14 +25,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.chatapp.Adapters.ChatItemAdapter;
 import com.example.chatapp.Classes.ChatHistoryComparator;
+import com.example.chatapp.Classes.SoundManager;
 import com.example.chatapp.Classes.WebService;
 import com.example.chatapp.Models.ChatHistory;
 import com.example.chatapp.Models.ChatItem;
 import com.example.chatapp.Models.FirebaseUserInstance;
+import com.example.chatapp.Models.WebServiceMessage;
 import com.example.chatapp.databinding.FragmentChatBinding;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 public class ChatFragment extends Fragment  {
@@ -74,8 +81,11 @@ public class ChatFragment extends Fragment  {
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                // WebServiceMessage message = (WebServiceMessage) intent.getSerializableExtra("message");
+                WebServiceMessage message = (WebServiceMessage) intent.getSerializableExtra("message");
                 Log.e("RECEIVE", "MESSAGE");
+
+                if(message.fromID != webService.webServiceUser.id)
+                    SoundManager.makeSound(context);
                 renderChatMenuUI();
             }
         };
@@ -115,5 +125,20 @@ public class ChatFragment extends Fragment  {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public boolean isApplicationInForeground() {
+        ActivityManager activityManager = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null) {
+            return false;
+        }
+        final String packageName = getContext().getPackageName();
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName.equals(packageName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
