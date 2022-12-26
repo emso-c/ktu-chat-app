@@ -28,7 +28,6 @@ import java.util.Objects;
 public class ChatActivity extends AppCompatActivity {
     private static final int UI_UPDATE_INTERVAL = 3000; // 1 second
 
-    private ActivityChatBinding binding;
     private WebServiceUser user;
     private WebService webService;
     ArrayList<WebServiceMessage> chatMessages = new ArrayList<>();
@@ -40,11 +39,6 @@ public class ChatActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     TextView title;
     TextView subTitle;
-
-    public ChatActivity(){}
-    public ChatActivity(ActivityChatBinding binding) {
-        this.binding = binding;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +97,7 @@ public class ChatActivity extends AppCompatActivity {
         };
         renderAppbar(user, updateUITask);
         fetchMessages();
+        recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
     }
 
     private void renderAppbar(WebServiceUser user, Runnable runnable){
@@ -137,6 +132,7 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        handler.removeCallbacks(updateUITask);
         finish();
     }
 
