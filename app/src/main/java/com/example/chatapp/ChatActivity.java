@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapp.Adapters.MessageAdapter;
 import com.example.chatapp.Classes.Helpers;
+import com.example.chatapp.Classes.SoundManager;
 import com.example.chatapp.Classes.WebService;
 import com.example.chatapp.Models.ChatHistory;
 import com.example.chatapp.Models.FirebaseUserInstance;
@@ -82,6 +83,7 @@ public class ChatActivity extends AppCompatActivity {
                 return;
             webService.sendMessage(String.valueOf(user.id), text);
             msgInputEditText.setText("");
+            SoundManager.makeSound(this);
             renderChatUI();
         });
 
