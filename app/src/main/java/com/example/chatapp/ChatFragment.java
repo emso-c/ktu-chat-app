@@ -64,6 +64,7 @@ public class ChatFragment extends Fragment {
                 getContext()
         );
 
+        UserManager.getInstance().id = String.valueOf(webService.webServiceUser.id);
         this.renderChatMenuUI();
         webService.listen_messages(requireContext());
 
