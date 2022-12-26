@@ -1,19 +1,25 @@
 package com.example.chatapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.chatapp.Adapters.MessageAdapter;
 import com.example.chatapp.Classes.Helpers;
 import com.example.chatapp.Classes.WebService;
+import com.example.chatapp.Models.ChatHistory;
 import com.example.chatapp.Models.UserManager;
+import com.example.chatapp.Models.WebServiceMessage;
 import com.example.chatapp.Models.WebServiceUser;
 import com.example.chatapp.databinding.ActivityChatBinding;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ChatActivity extends AppCompatActivity {
@@ -21,6 +27,9 @@ public class ChatActivity extends AppCompatActivity {
     private ActivityChatBinding binding;
     private WebServiceUser user;
     private WebService webService;
+    ArrayList<WebServiceMessage> chatMessages = new ArrayList<>();
+
+    MessageAdapter messageAdapter;
 
     public ChatActivity(){}
     public ChatActivity(ActivityChatBinding binding) {
@@ -47,7 +56,6 @@ public class ChatActivity extends AppCompatActivity {
         String username = intent.getStringExtra("username");
 
         user = webService.getUserByUsername(username);
-        //webService.getChatHistory();
 
         //ImageView profilePic = findViewById(R.id.chat_profile_picture);
         //profilePic.setImageResource(R.drawable.ic_default_avatar);
@@ -60,6 +68,22 @@ public class ChatActivity extends AppCompatActivity {
             subTitle.setText(Helpers.parseLastSeen(user.lastSeen));
         }
         toolbar.setNavigationOnClickListener(v -> finish());
+
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        messageAdapter = new MessageAdapter(chatMessages, this);
+        recyclerView.setAdapter(messageAdapter);
+
+        renderChatUI();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void renderChatUI(){
+        ChatHistory chatHistory = webService.getChatHistory(String.valueOf(user.id));
+        chatMessages.clear();
+        chatMessages.addAll(chatHistory.messages);
+        messageAdapter.notifyDataSetChanged();
     }
 
     @Override
