@@ -1,5 +1,6 @@
 package com.example.chatapp.Classes;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -75,6 +76,7 @@ public class Helpers {
         }
 
         Calendar inputCalendar = Calendar.getInstance();
+        assert date != null;
         inputCalendar.setTime(date);
 
         Calendar currentCalendar = Calendar.getInstance();
@@ -107,5 +109,20 @@ public class Helpers {
             SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
             return outputFormat.format(date);
         }
+    }
+
+    public static String parseMessageDate(String inputDate){
+        SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        try {
+            Date date = inputFormat.parse(inputDate);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    public static String parseSeenText(Boolean isSeen){
+        return (isSeen)?"✔✔":"✔";
     }
 }
