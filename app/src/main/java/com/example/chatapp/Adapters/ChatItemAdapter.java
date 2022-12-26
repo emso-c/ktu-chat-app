@@ -24,6 +24,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
 
     ArrayList<ChatItem> chatItemList;
     Context context;
+    ArrayList<Boolean> selected = new ArrayList<>();
 
     public ChatItemAdapter(ArrayList<ChatItem> chatItem_list, Context context) {
         this.chatItemList = chatItem_list;
@@ -41,6 +42,11 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (selected.get(position)) {
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.blue));
+        } else {
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.blue_ultra_dark));
+        }
         ChatItem chatItem = chatItemList.get(position);
         Picasso.get()
                 .load(chatItem.profilePic)
@@ -65,7 +71,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
         return chatItemList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         ImageView image;
         TextView name, last_message, last_message_date, unseen_messages;
 
@@ -78,6 +84,8 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
             last_message_date = itemView.findViewById(R.id.last_message_date);
             unseen_messages = itemView.findViewById(R.id.unseen_messages);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+            selected.add(false);
         }
 
         @Override
@@ -91,5 +99,13 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
             context.startActivity(intent);
         }
 
+        @Override
+        public boolean onLongClick(View view) {
+            // Toggle the selected state of the item
+            selected.set(getAdapterPosition(), !selected.get(getAdapterPosition()));
+            // Notify the adapter of the change
+            notifyItemChanged(getAdapterPosition());
+            return true;
+        }
     }
 }
