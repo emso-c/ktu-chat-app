@@ -195,7 +195,10 @@ public class WebService {
                     int toID = messageObject.getInt("toID");
                     String content = messageObject.getString("content");
                     String date = messageObject.getString("date");
-                    WebServiceMessage message = new WebServiceMessage(id, fromID, toID, content, date);
+                    int seen = messageObject.optInt("seen", 0);
+                    boolean isSeen = (seen == 1);
+                    WebServiceMessage message = new WebServiceMessage(
+                            id, fromID, toID, content, date, isSeen);
                     messages.add(message);
                 }
                 String username = chatObject.getString("username");
@@ -203,7 +206,8 @@ public class WebService {
                 String lastMessage = chatObject.getString("last_message");
                 String lastMessageDate = chatObject.getString("last_message_date");
                 String unseenMessages = chatObject.getString("unseen_messages");
-                ChatItem chatInfo = new ChatItem(key, firebaseUid, "", username, lastMessage, lastMessageDate, unseenMessages);
+                ChatItem chatInfo = new ChatItem(key, firebaseUid, "", username,
+                        lastMessage,lastMessageDate, unseenMessages);
 
                 chatHistoryArrayList.add(new ChatHistory(messages, chatInfo));
             }
@@ -246,16 +250,17 @@ public class WebService {
 
             @Override
             public void onMessage(ServerSentEvent sse, String id, String event, String message) {
-                Log.d("SSE", "onMessage: " + message);
                 try {
+                    Log.d("SSE", "onMessage: " + message);
                     if (event.equals("message")){
                         JSONObject jsonObject = new JSONObject(message);
                         int fromID = jsonObject.getInt("fromID");
                         int toID = jsonObject.getInt("toID");
                         String content = jsonObject.getString("content");
                         String date = jsonObject.getString("date");
-
-                        WebServiceMessage webServiceMessage = new WebServiceMessage(0, fromID, toID, content, date);
+                        int seen = jsonObject.optInt("seen", 0);
+                        boolean isSeen = (seen == 1);
+                        WebServiceMessage webServiceMessage = new WebServiceMessage(0, fromID, toID, content, date, isSeen);
                         Intent intent = new Intent("new-message");
                         intent.putExtra("message", webServiceMessage);
                         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
