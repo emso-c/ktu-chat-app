@@ -77,7 +77,11 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
+            TextView textView = (TextView) v.findViewById(R.id.user_name);
+            String user_name = textView.getText().toString();
+
             Intent intent = new Intent(context, ChatActivity.class);
+            intent.putExtra("username", user_name);
             context.startActivity(intent);
         }
 
