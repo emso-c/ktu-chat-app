@@ -46,8 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         tilPassword = findViewById(R.id.text_input_password);
 
         Button btnSignIn = findViewById(R.id.btn_sign_in);
-        Button btnInfo = findViewById(R.id.btn_usr_info);
-        Button btnSignOut = findViewById(R.id.btn_signout);
         Button btnLoginEmailPass = findViewById(R.id.btn_login_email_pass);
         Button btnSignUpEmailPass = findViewById(R.id.btn_sign_up_email_pass);
 
@@ -62,37 +60,6 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(
                         getApplicationContext(),
                         "Already logged in",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        btnInfo.setOnClickListener(view -> {
-            if (manager.user != null){
-                Toast.makeText(
-                        getApplicationContext(),
-                        manager.user.getUid(),
-                        Toast.LENGTH_SHORT).show();
-            } else{
-                Toast.makeText(
-                        getApplicationContext(),
-                        "User not logged in",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        btnSignOut.setOnClickListener(view -> {
-            if (manager.user != null){
-                FirebaseAuth.getInstance().signOut();
-                manager.user = null;
-                //Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                Toast.makeText(
-                        getApplicationContext(),
-                        "Logged out",
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(
-                        getApplicationContext(),
-                        "Not logged in",
                         Toast.LENGTH_SHORT).show();
             }
         });
