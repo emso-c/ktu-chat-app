@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:background="@color/blue_dark">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -92,7 +92,48 @@
                 android:scrollbars="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/chat_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="10dp"
+                tools:ignore="ObsoleteLayoutParam"
+                android:gravity="center">
+
+                <EditText
+                    android:id="@+id/message_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:layout_marginHorizontal="15dp"
+                    android:hint="Message"
+                    android:textColorHint="@color/bright_grey"
+                    android:background="@drawable/rounded_edittext"
+                    android:elevation="20dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/send_button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:background="@drawable/rounded_send_btn"
+                    app:backgroundTint="@null"
+                    app:icon="@drawable/ic_send_icon"
+                    app:iconGravity="textStart"
+                    app:iconSize="27dp"
+                    app:iconPadding="0dp"
+                    app:iconTint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
 
 
     </FrameLayout>
