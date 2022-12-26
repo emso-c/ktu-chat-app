@@ -68,7 +68,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
             super(itemView);
             itemView.setOnClickListener(this);
 
-            image = itemView.findViewById(R.id.profile_image);
+            image = itemView.findViewById(R.id.chat_menu_profile_picture);
             name = itemView.findViewById(R.id.user_name);
             last_message = itemView.findViewById(R.id.last_message);
             last_message_date = itemView.findViewById(R.id.last_message_date);
