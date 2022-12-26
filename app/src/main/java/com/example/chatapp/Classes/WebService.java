@@ -140,7 +140,7 @@ public class WebService {
             user.id = jsonObject.getInt("id");
             user.username = jsonObject.getString("name");
             user.password = jsonObject.getString("password");
-            user.firebase_uid = jsonObject.getString("firebase_uid");
+            user.firebaseUid = jsonObject.getString("firebase_uid");
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -206,8 +206,9 @@ public class WebService {
                 String lastMessage = chatObject.getString("last_message");
                 String lastMessageDate = chatObject.getString("last_message_date");
                 String unseenMessages = chatObject.getString("unseen_messages");
+                String lastSeen = chatObject.getString("last_seen");
                 ChatItem chatInfo = new ChatItem(key, firebaseUid, "", username,
-                        lastMessage,lastMessageDate, unseenMessages);
+                        lastMessage,lastMessageDate, unseenMessages, lastSeen);
 
                 chatHistoryArrayList.add(new ChatHistory(messages, chatInfo));
             }
@@ -247,9 +248,10 @@ public class WebService {
             String lastMessage = chatObject.getString("last_message");
             String lastMessageDate = chatObject.getString("last_message_date");
             String unseenMessages = chatObject.getString("unseen_messages");
+            String lastSeen = chatObject.getString("last_seen");
             chatItem = new ChatItem(
                     Integer.toString(id), firebaseUid, "", username,
-                    lastMessage, lastMessageDate, unseenMessages);
+                    lastMessage, lastMessageDate, unseenMessages, lastSeen);
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -268,7 +270,7 @@ public class WebService {
             user.id = jsonObject.getInt("id");
             user.username = jsonObject.getString("name");
             user.password = jsonObject.getString("password");
-            user.firebase_uid = jsonObject.getString("firebase_uid");
+            user.firebaseUid = jsonObject.getString("firebase_uid");
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -288,7 +290,8 @@ public class WebService {
             user.id = jsonObject.getInt("id");
             user.username = jsonObject.getString("name");
             user.password = jsonObject.getString("password");
-            user.firebase_uid = jsonObject.getString("firebase_uid");
+            user.firebaseUid = jsonObject.getString("firebase_uid");
+            user.lastSeen = jsonObject.getString("last_seen");
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
