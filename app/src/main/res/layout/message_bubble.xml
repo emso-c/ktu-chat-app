@@ -7,7 +7,8 @@
     android:background="@drawable/ic_message_bubble"
     android:paddingHorizontal="4dp"
     android:paddingVertical="3dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_margin="3dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -21,9 +22,9 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="@color/white"
-            android:maxLines="10"
-            android:padding="10dp"
-            android:maxWidth="250dp"
+            android:maxLines="30"
+            android:padding="5dp"
+            android:maxWidth="270dp"
             android:text="Sample message"/>
 
     </LinearLayout>
@@ -37,9 +38,8 @@
             android:id="@+id/message_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:maxLines="1"
             android:text="11:12"
             tools:ignore="HardcodedText" />
@@ -48,9 +48,8 @@
             android:id="@+id/seen_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="10sp"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:maxLines="1"
             android:layout_marginStart="8dp"
             android:text="✔✔"
