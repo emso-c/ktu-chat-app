@@ -277,6 +277,26 @@ public class WebService {
         return user;
     }
 
+    public WebServiceUser getUserByUsername(String username){
+        Response response = handler.get("get-user-by-username", "username=" + username);
+        WebServiceUser user = new WebServiceUser();
+
+        try {
+            assert response.body() != null;
+            String jsonString = response.body().string();
+            JSONObject jsonObject = new JSONObject(jsonString);
+            user.id = jsonObject.getInt("id");
+            user.username = jsonObject.getString("name");
+            user.password = jsonObject.getString("password");
+            user.firebase_uid = jsonObject.getString("firebase_uid");
+
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
     public void listen_messages(Context context){
         // source: https://www.youtube.com/watch?v=p0E3vNY1jtE
         String url = this.context.getString(R.string.hostname)+":"+context.getString(R.string.port)+"/message-stream?_id="+ webServiceUser.id;
