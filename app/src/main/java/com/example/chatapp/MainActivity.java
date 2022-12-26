@@ -71,8 +71,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    public void logout(MenuItem item) {
+    public void logoutOptionSelected(MenuItem item) {
         if (item.getItemId() == R.id.logout_option){
             UserManager manager = UserManager.getInstance();
             manager.user = null;

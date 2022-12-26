@@ -5,7 +5,7 @@
         android:title="Settings" />
     <item
         android:id="@+id/logout_option"
-        android:onClick="logout"
+        android:onClick="logoutOptionSelected"
         android:title="Logout" />
 
 </menu>
