@@ -4,13 +4,15 @@ public class WebServiceUser {
     public int id;
     public String username;
     public String password;
-    public String firebase_uid;
+    public String firebaseUid;
+    public String lastSeen;
 
     public WebServiceUser(){}
-    public WebServiceUser(int id, String username, String password, String firebase_uid) {
+    public WebServiceUser(int id, String username, String password, String firebaseUid, String lastSeen) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.firebase_uid = firebase_uid;
+        this.firebaseUid = firebaseUid;
+        this.lastSeen = lastSeen;
     }
 }
