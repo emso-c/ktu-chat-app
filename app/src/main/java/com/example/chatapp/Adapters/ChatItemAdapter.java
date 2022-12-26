@@ -1,6 +1,7 @@
 package com.example.chatapp.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.chatapp.ChatActivity;
 import com.example.chatapp.Classes.Helpers;
 import com.example.chatapp.Models.ChatItem;
 import com.example.chatapp.R;
@@ -75,7 +77,8 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-            // TODO handle
+            Intent intent = new Intent(context, ChatActivity.class);
+            context.startActivity(intent);
         }
 
     }
