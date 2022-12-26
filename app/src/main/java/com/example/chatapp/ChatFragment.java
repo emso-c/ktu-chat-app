@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class ChatFragment extends Fragment {
+public class ChatFragment extends Fragment  {
 
     FragmentChatBinding binding;
     ArrayList<ChatItem> chatItemArrayList = new ArrayList<>();
@@ -45,13 +46,14 @@ public class ChatFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        Log.e("ChatFragment", "onCreate");
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentChatBinding.inflate(inflater, container, false);
-
+        Log.e("ChatFragment", "onCreateView");
         adapter = new ChatItemAdapter(chatItemArrayList, getContext());
         binding.chatRecyclerView.setAdapter(adapter);
         layoutManager = new LinearLayoutManager(getContext());
@@ -73,6 +75,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 // WebServiceMessage message = (WebServiceMessage) intent.getSerializableExtra("message");
+                Log.e("RECEIVE", "MESSAGE");
                 renderChatMenuUI();
             }
         };
@@ -88,6 +91,9 @@ public class ChatFragment extends Fragment {
         ArrayList<ChatHistory> chatHistoryArrayList = webService.getChatHistoryArray();
         Collections.sort(chatHistoryArrayList, new ChatHistoryComparator());
         for (ChatHistory chatHistory: chatHistoryArrayList){
+            Log.e("VALS:", chatHistory.chatInfo.name);
+            Log.e("VALS:", chatHistory.chatInfo.unseenMessages);
+            Log.e("VALS:", chatHistory.chatInfo.lastMessage);
             chatItemArrayList.add(
                     new ChatItem(
                             chatHistory.chatInfo.id,
