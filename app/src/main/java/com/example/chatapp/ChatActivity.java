@@ -1,5 +1,6 @@
 package com.example.chatapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -7,6 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.chatapp.Classes.Helpers;
 import com.example.chatapp.Classes.WebService;
 import com.example.chatapp.Models.UserManager;
 import com.example.chatapp.Models.WebServiceUser;
@@ -51,6 +53,9 @@ public class ChatActivity extends AppCompatActivity {
         //profilePic.setImageResource(R.drawable.ic_default_avatar);
         TextView title = findViewById(R.id.toolbar_title);
         title.setText(user.username);
+        TextView subTitle = findViewById(R.id.toolbar_subtitle);
+        subTitle.setText(Helpers.parseLastSeen(user.lastSeen));
+
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
