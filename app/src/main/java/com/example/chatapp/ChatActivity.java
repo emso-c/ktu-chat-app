@@ -3,6 +3,7 @@ package com.example.chatapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,14 +26,20 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class ChatActivity extends AppCompatActivity {
+    private static final int UI_UPDATE_INTERVAL = 3000; // 1 second
 
     private ActivityChatBinding binding;
     private WebServiceUser user;
     private WebService webService;
     ArrayList<WebServiceMessage> chatMessages = new ArrayList<>();
 
+    private Handler handler;
+    private Runnable updateUITask;
+
     MessageAdapter messageAdapter;
     RecyclerView recyclerView;
+    TextView title;
+    TextView subTitle;
 
     public ChatActivity(){}
     public ChatActivity(ActivityChatBinding binding) {
@@ -59,17 +66,11 @@ public class ChatActivity extends AppCompatActivity {
         String username = intent.getStringExtra("username");
 
         user = webService.getUserByUsername(username);
+        title = findViewById(R.id.toolbar_title);
+        subTitle = findViewById(R.id.toolbar_subtitle);
 
         //ImageView profilePic = findViewById(R.id.chat_profile_picture);
         //profilePic.setImageResource(R.drawable.ic_default_avatar);
-        TextView title = findViewById(R.id.toolbar_title);
-        title.setText(user.username);
-        TextView subTitle = findViewById(R.id.toolbar_subtitle);
-        if(user.isOnline){
-            subTitle.setText("Online");
-        } else {
-            subTitle.setText(Helpers.parseLastSeen(user.lastSeen));
-        }
         toolbar.setNavigationOnClickListener(v -> finish());
 
 
@@ -91,20 +92,69 @@ public class ChatActivity extends AppCompatActivity {
             renderChatUI();
         });
 
-        renderChatUI();
+        handler = new Handler();
+        updateUITask = new Runnable() {
+            @Override
+            public void run() {
+                user = webService.getUserByUsername(username);
+                renderAppbar(user, this);
+                fetchMessages();
+            }
+        };
+        renderAppbar(user, updateUITask);
+        fetchMessages();
     }
 
+    private void renderAppbar(WebServiceUser user, Runnable runnable){
+        title.setText(user.username);
+        if(user.isOnline){
+            subTitle.setText("Online");
+        } else {
+            subTitle.setText(Helpers.parseLastSeen(user.lastSeen));
+        }
+        handler.postDelayed(runnable, UI_UPDATE_INTERVAL);
+    }
+
+    private void fetchMessages(){
+        ChatHistory chatHistory = webService.getChatHistory(String.valueOf(user.id));
+        int oldChatMessageSize = chatMessages.size();
+        chatMessages.clear();
+        for (WebServiceMessage message: chatHistory.messages){
+            if(message.id != user.id && !message.seen)
+                webService.setSeen(message.id);
+            chatMessages.add(message);
+        }
+        if (chatMessages.size() > oldChatMessageSize){
+            recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+        }
+        messageAdapter.notifyDataSetChanged();
+    }
     @SuppressLint("NotifyDataSetChanged")
     public void renderChatUI(){
-        ChatHistory chatHistory = webService.getChatHistory(String.valueOf(user.id));
-        chatMessages.clear();
-        chatMessages.addAll(chatHistory.messages);
-        messageAdapter.notifyDataSetChanged();
+        fetchMessages();
         recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
     }
 
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(updateUITask);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(updateUITask);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.postDelayed(updateUITask, UI_UPDATE_INTERVAL);
     }
 }
