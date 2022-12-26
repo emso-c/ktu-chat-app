@@ -54,8 +54,11 @@ public class ChatActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.toolbar_title);
         title.setText(user.username);
         TextView subTitle = findViewById(R.id.toolbar_subtitle);
-        subTitle.setText(Helpers.parseLastSeen(user.lastSeen));
-
+        if(user.isOnline){
+            subTitle.setText("Online");
+        } else {
+            subTitle.setText(Helpers.parseLastSeen(user.lastSeen));
+        }
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
