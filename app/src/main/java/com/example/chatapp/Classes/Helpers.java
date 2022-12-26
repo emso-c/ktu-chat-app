@@ -64,4 +64,48 @@ public class Helpers {
             return 0;
         }
     }
+
+    public static String parseLastSeen(String inputDate){
+        SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+        Date date = null;
+        try {
+            date = inputFormat.parse(inputDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar inputCalendar = Calendar.getInstance();
+        inputCalendar.setTime(date);
+
+        Calendar currentCalendar = Calendar.getInstance();
+
+        long timeDifference = currentCalendar.getTimeInMillis() - inputCalendar.getTimeInMillis();
+        long minutes = timeDifference / (60 * 1000);
+        long hours = minutes / 60;
+        long days = hours / 24;
+
+        if(days == 0){
+            // today
+            if(hours == 0){
+                // this hour
+                if(minutes == 0){
+                    // just now
+                    return "just now";
+                }else{
+                    // x minutes ago
+                    return minutes + " minutes ago";
+                }
+            }else{
+                // x hours ago
+                return hours + " hours ago";
+            }
+        }else if(days == 1){
+            // yesterday
+            return "yesterday";
+        }else{
+            // dd.mm.yyyy
+            SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            return outputFormat.format(date);
+        }
+    }
 }
