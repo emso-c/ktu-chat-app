@@ -3,6 +3,8 @@ package com.example.chatapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +32,7 @@ public class ChatActivity extends AppCompatActivity {
     ArrayList<WebServiceMessage> chatMessages = new ArrayList<>();
 
     MessageAdapter messageAdapter;
+    RecyclerView recyclerView;
 
     public ChatActivity(){}
     public ChatActivity(ActivityChatBinding binding) {
@@ -70,10 +73,23 @@ public class ChatActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
 
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         messageAdapter = new MessageAdapter(chatMessages, this);
         recyclerView.setAdapter(messageAdapter);
+
+        Button sendButton = findViewById(R.id.send_button);
+        EditText msgInputEditText = findViewById(R.id.message_input);
+        msgInputEditText.setOnFocusChangeListener((view, b) -> recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1));
+
+        sendButton.setOnClickListener(view -> {
+            String text = String.valueOf(msgInputEditText.getText());
+            if (text.isEmpty())
+                return;
+            webService.sendMessage(String.valueOf(user.id), text);
+            msgInputEditText.setText("");
+            renderChatUI();
+        });
 
         renderChatUI();
     }
@@ -84,6 +100,7 @@ public class ChatActivity extends AppCompatActivity {
         chatMessages.clear();
         chatMessages.addAll(chatHistory.messages);
         messageAdapter.notifyDataSetChanged();
+        recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
     }
 
     @Override
