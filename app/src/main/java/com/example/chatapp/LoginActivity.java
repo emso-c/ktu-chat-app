@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.e("LOGIN", "create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -252,6 +253,7 @@ public class LoginActivity extends AppCompatActivity {
         manager.email = manager.user.getEmail();
         manager.phoneNumber = manager.user.getPhoneNumber();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 }
