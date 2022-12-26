@@ -90,6 +90,10 @@ public class WebService {
         return false;
     }
 
+    public void setSeen(int id){
+        handler.get("set-message-seen", "_id="+id);
+    }
+
     public boolean logout(){
         if (webServiceUser == null){
             return true; // already logged out
