@@ -84,7 +84,7 @@ public class ChatFragment extends Fragment {
 
     public void renderChatMenuUI(){
         chatItemArrayList.clear();
-        ArrayList<ChatHistory> chatHistoryArrayList = webService.getChatHistory();
+        ArrayList<ChatHistory> chatHistoryArrayList = webService.getChatHistoryArray();
         Collections.sort(chatHistoryArrayList, new ChatHistoryComparator());
         for (ChatHistory chatHistory: chatHistoryArrayList){
             chatItemArrayList.add(

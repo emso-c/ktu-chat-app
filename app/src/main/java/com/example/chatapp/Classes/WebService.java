@@ -171,12 +171,11 @@ public class WebService {
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
-
         return webServiceMessages;
     }
 
-    public ArrayList<ChatHistory> getChatHistory() {
-        Response response = handler.get("received-messages-by-users", "_id=" + webServiceUser.id);
+    public ArrayList<ChatHistory> getChatHistoryArray() {
+        Response response = handler.get("chat-history", "_id=" + webServiceUser.id);
         ArrayList<ChatHistory> chatHistoryArrayList = new ArrayList<>();
 
         try {
