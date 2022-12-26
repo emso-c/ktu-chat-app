@@ -43,7 +43,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
         ChatItem chatItem = chatItemList.get(position);
         Picasso.get()
                 .load(chatItem.profilePic)
-                .placeholder(com.firebase.ui.auth.R.drawable.fui_ic_anonymous_white_24dp)
+                .placeholder(R.drawable.ic_default_avatar)
                 .into(holder.image);
         holder.name.setText(chatItem.name);
         holder.last_message.setText(chatItem.lastMessage);
