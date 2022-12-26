@@ -1,29 +1,38 @@
 package com.example.chatapp;
 
 import android.os.Bundle;
-import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.chatapp.Classes.WebService;
 import com.example.chatapp.Models.UserManager;
+import com.example.chatapp.Models.WebServiceUser;
 import com.example.chatapp.databinding.ActivityChatBinding;
+
+import java.util.Objects;
 
 public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding binding;
-    private Toolbar toolbar;
+    private WebServiceUser user;
     private WebService webService;
+
+    public ChatActivity(){}
+    public ChatActivity(ActivityChatBinding binding) {
+        this.binding = binding;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        toolbar = findViewById(R.id.chatToolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.chatToolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         webService = new WebService(
                 getString(R.string.hostname),
@@ -32,12 +41,17 @@ public class ChatActivity extends AppCompatActivity {
                 this
         );
 
-        getSupportActionBar().setTitle("User Name");
-        getSupportActionBar().setSubtitle("last seen");
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("username");
+
+        user = webService.getUserByUsername(username);
+        //webService.getChatHistory();
+
+        //ImageView profilePic = findViewById(R.id.chat_profile_picture);
+        //profilePic.setImageResource(R.drawable.ic_default_avatar);
+        TextView title = findViewById(R.id.toolbar_title);
+        title.setText(user.username);
         toolbar.setNavigationOnClickListener(v -> finish());
-        //Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        //toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     @Override
