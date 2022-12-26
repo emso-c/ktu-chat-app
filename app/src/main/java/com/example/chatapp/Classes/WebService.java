@@ -217,7 +217,47 @@ public class WebService {
         return chatHistoryArrayList;
     }
 
-        public WebServiceUser getUserByID(int id){
+    public ChatHistory getChatHistory(String target_id) {
+        Response response = handler.get("chat-history-with-user", "_id=" + webServiceUser.id + "&_target_id=" + target_id);
+        ChatItem chatItem = null;
+        ArrayList<WebServiceMessage> messages = new ArrayList<>();;
+
+
+        try {
+            assert response.body() != null;
+            String jsonString = response.body().string();
+            JSONObject chatObject = new JSONObject(jsonString);
+            JSONArray messageArray = chatObject.getJSONArray("messages");
+            for (int i = 0; i < messageArray.length(); i++) {
+                JSONObject messageObject = messageArray.getJSONObject(i);
+                int id = messageObject.getInt("id");
+                int fromID = messageObject.getInt("fromID");
+                int toID = messageObject.getInt("toID");
+                String content = messageObject.getString("content");
+                String date = messageObject.getString("date");
+                int seen = messageObject.optInt("seen", 0);
+                boolean isSeen = (seen == 1);
+                WebServiceMessage message = new WebServiceMessage(id, fromID, toID, content, date, isSeen);
+                messages.add(message);
+            }
+
+            String username = chatObject.getString("username");
+            int id = chatObject.getInt("id");
+            String firebaseUid = chatObject.getString("firebase_uid");
+            String lastMessage = chatObject.getString("last_message");
+            String lastMessageDate = chatObject.getString("last_message_date");
+            String unseenMessages = chatObject.getString("unseen_messages");
+            chatItem = new ChatItem(
+                    Integer.toString(id), firebaseUid, "", username,
+                    lastMessage, lastMessageDate, unseenMessages);
+
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return new ChatHistory(messages, chatItem);
+    }
+
+    public WebServiceUser getUserByID(int id){
         Response response = handler.get("get-user-by-id", "_id="+ id);
         WebServiceUser user = new WebServiceUser();
 
