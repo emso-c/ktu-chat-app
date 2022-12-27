@@ -18,16 +18,18 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
             android:text="@string/app_name"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:menu="@menu/menu_main">
+            android:theme="?attr/actionBarTheme"
+            app:menu="@menu/menu_main"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ktu_amblem"
-                android:background="@drawable/ic_white_circle"/>
+                android:background="@drawable/ic_white_circle"
+                android:src="@drawable/ktu_amblem" />
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
