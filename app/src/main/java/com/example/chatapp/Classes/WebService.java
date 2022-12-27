@@ -95,6 +95,10 @@ public class WebService {
         handler.get("set-message-seen", "_id="+id);
     }
 
+    public void setTyping(boolean isTyping){
+        handler.get("update-typing", "_id="+webServiceUser.id+"&is_typing="+isTyping);
+    }
+
     public boolean logout(){
         if (webServiceUser == null){
             return true; // already logged out
