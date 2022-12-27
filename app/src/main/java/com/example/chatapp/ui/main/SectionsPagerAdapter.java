@@ -1,7 +1,6 @@
 package com.example.chatapp.ui.main;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -11,7 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.chatapp.ChatFragment;
 import com.example.chatapp.R;
-import com.example.chatapp.StatusFragment;
+import com.example.chatapp.ContactsFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -32,7 +31,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0: return new ChatFragment();
-            case 1: return new StatusFragment();
+            case 1: return new ContactsFragment();
             default: return null; // TODO raises exception, catch err?
         }
     }
