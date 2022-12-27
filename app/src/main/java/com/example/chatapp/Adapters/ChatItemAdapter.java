@@ -18,7 +18,6 @@ import com.example.chatapp.Classes.WebService;
 import com.example.chatapp.Models.ChatItem;
 import com.example.chatapp.Models.FirebaseUserInstance;
 import com.example.chatapp.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -31,6 +30,27 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
     public ChatItemAdapter(ArrayList<ChatItem> chatItem_list, Context context) {
         this.chatItemList = chatItem_list;
         this.context = context;
+    }
+
+    public void clearFilter(ArrayList<ChatItem> chatItemListFull) {
+        chatItemList.clear();
+        chatItemList.addAll(chatItemListFull);
+        notifyDataSetChanged();
+    }
+
+    public void filter(String query, ArrayList<ChatItem> chatItemListFull) {
+        chatItemList.clear();
+        query = query.toLowerCase();
+        if (query.isEmpty()) {
+            chatItemList.addAll(chatItemListFull);
+        } else {
+            for (ChatItem chatItem : chatItemListFull) {
+                if (chatItem.name.toLowerCase().contains(query) || chatItem.lastMessage.toLowerCase().contains(query)) {
+                    chatItemList.add(chatItem);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @NonNull
