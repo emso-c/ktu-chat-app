@@ -1,5 +1,6 @@
 package com.example.chatapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.chatapp.Classes.WebService;
@@ -75,6 +76,13 @@ public class MainActivity extends AppCompatActivity {
     public void logoutOptionSelected(MenuItem item) {
         if (item.getItemId() == R.id.logout_option){
             logout();
+        }
+    }
+
+    public void profileOptionSelected(MenuItem item){
+        if (item.getItemId() == R.id.profile_option){
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
         }
     }
 
