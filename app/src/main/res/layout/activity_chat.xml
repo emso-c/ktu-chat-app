@@ -36,7 +36,8 @@
                         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:id="@+id/user_info_group_layout"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
 
@@ -81,6 +82,33 @@
                                     tools:ignore="HardcodedText" />
                             </LinearLayout>
                         </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center">
+                            <ImageButton
+                                android:id="@+id/search_bar_up_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@drawable/ic_up_arrow"
+                                android:background="@null"
+                                android:visibility="gone"/>
+                            <ImageButton
+                                android:id="@+id/search_bar_down_button"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@drawable/ic_down_arrow"
+                                android:background="@null"
+                                android:visibility="gone"/>
+                            <androidx.appcompat.widget.SearchView
+                                android:id="@+id/search_chat_menu"
+                                android:layoutDirection="rtl"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:iconifiedByDefault="false"
+                                android:queryHint="Search..."/>
+                        </LinearLayout>
+
                     </androidx.appcompat.widget.Toolbar>
                 </LinearLayout>
             </com.google.android.material.appbar.AppBarLayout>
