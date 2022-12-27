@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_ultra_dark"
+    tools:context=".LoginActivity">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_register"
+        android:layout_width="134dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="640dp"
+        android:text="UPDATE"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_del_acc"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="276dp"
+        android:layout_marginTop="640dp"
+        android:background="@drawable/ic_trash_bin"
+        android:backgroundTint="#910707"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_email_register"
+        android:layout_width="261dp"
+        android:layout_height="87dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="456dp"
+        android:background="@android:color/transparent"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_email_register"
+            android:layout_width="241dp"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="@string/email_address_btn"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/text_view_status"
+        android:layout_width="232dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="248dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:text="Ben bir KtuChat kullanıcısıyım."
+        android:textAlignment="center"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/text_view_username"
+        android:layout_width="228dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="212dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Sample User"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_status"
+        android:layout_width="259dp"
+        android:layout_height="83dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="304dp"
+        android:background="@android:color/transparent"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_status"
+            android:layout_width="241dp"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="Status"
+            android:inputType="text"
+            tools:ignore="HardcodedText" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_username_register"
+        android:layout_width="259dp"
+        android:layout_height="83dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="376dp"
+        android:background="@android:color/transparent"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_username_register"
+            android:layout_width="241dp"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="text"
+            tools:ignore="HardcodedText" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_password_register"
+        android:layout_width="259dp"
+        android:layout_height="83dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="536dp"
+        android:background="@android:color/transparent"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_password_register"
+            android:layout_width="241dp"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="@string/password_btn"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image_view_profile_pic"
+            android:layout_width="223dp"
+            android:layout_height="187dp"
+            android:src="@drawable/ic_default_avatar" />
+        <ImageView
+            android:id="@+id/image_view_update"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_camera"
+            android:layout_marginStart="146dp"
+            android:layout_marginTop="120dp">
+
+        </ImageView>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
