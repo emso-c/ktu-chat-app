@@ -393,6 +393,24 @@ public class WebService {
         }
     }
 
+    public void putProfilePicture(ImageView imageView, String firebase_uid){
+        try{
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            storageRef.child("profile_photos/"+firebase_uid).getDownloadUrl().addOnSuccessListener(uri -> {
+                Picasso.get()
+                        .load(uri)
+                        .placeholder(R.drawable.ic_default_avatar)
+                        .into(imageView);
+            }).addOnFailureListener(exception -> {
+                Log.e("ERROR PP DOWNLOAD INS", exception.toString());
+            });
+        } catch (Exception e){
+            e.printStackTrace();
+            Log.e("ERROR DOWNLOADING IMAGE", e.toString());
+        }
+    }
+
     private void getProfilePicture() {
 
     }
