@@ -22,6 +22,12 @@
             android:text="@string/app_name"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:menu="@menu/menu_main">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ktu_amblem"
+                android:background="@drawable/ic_white_circle"/>
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
