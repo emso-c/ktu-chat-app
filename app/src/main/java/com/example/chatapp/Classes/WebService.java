@@ -39,6 +39,7 @@ public class WebService {
         this.webServiceUser = this.getUserByFirebaseUID(manager.uid);
         if(webServiceUser == null){
             Boolean success = this.register(manager.username, manager.password, manager.uid);
+            this.webServiceUser = this.getUserByFirebaseUID(manager.uid);
             if (!success)
                 throw new RuntimeException("Could not register new firebase user");
         }
@@ -145,9 +146,9 @@ public class WebService {
             user.username = jsonObject.getString("name");
             user.password = jsonObject.getString("password");
             user.firebaseUid = jsonObject.getString("firebase_uid");
-
         } catch (IOException | JSONException e) {
             e.printStackTrace();
+            return null;
         }
 
         return user;
@@ -225,7 +226,7 @@ public class WebService {
     public ChatHistory getChatHistory(String target_id) {
         Response response = handler.get("chat-history-with-user", "_id=" + webServiceUser.id + "&_target_id=" + target_id);
         ChatItem chatItem = null;
-        ArrayList<WebServiceMessage> messages = new ArrayList<>();;
+        ArrayList<WebServiceMessage> messages = new ArrayList<>();
 
 
         try {
