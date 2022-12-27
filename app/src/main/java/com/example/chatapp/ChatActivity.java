@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -77,6 +79,25 @@ public class ChatActivity extends AppCompatActivity {
         EditText msgInputEditText = findViewById(R.id.message_input);
         msgInputEditText.setOnFocusChangeListener((view, b) -> recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1));
 
+        msgInputEditText.addTextChangedListener(new TextWatcher() {
+            boolean lock = false;
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                webService.setTyping(true);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (lock) return;
+                lock = true;
+                new Handler().postDelayed(() -> {
+                    lock = false;
+                    webService.setTyping(false);
+                }, 1000); // delay by 1 second
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        });
+
         sendButton.setOnClickListener(view -> {
             String text = String.valueOf(msgInputEditText.getText());
             if (text.isEmpty())
@@ -104,7 +125,12 @@ public class ChatActivity extends AppCompatActivity {
     private void renderAppbar(WebServiceUser user, Runnable runnable){
         title.setText(user.username);
         if(user.isOnline){
-            subTitle.setText("Online");
+            if(user.isTyping){
+                subTitle.setText("Typing...");
+            }
+            else{
+                subTitle.setText("Online");
+            }
         } else {
             subTitle.setText(Helpers.parseLastSeen(user.lastSeen));
         }
