@@ -77,8 +77,7 @@ public class ChatFragment extends Fragment  {
         this.renderChatMenuUI();
         webService.listen_messages(requireContext());
 
-        IntentFilter filter = new IntentFilter("new-message");
-        BroadcastReceiver receiver = new BroadcastReceiver() {
+        BroadcastReceiver messageReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 WebServiceMessage message = (WebServiceMessage) intent.getSerializableExtra("message");
@@ -89,7 +88,18 @@ public class ChatFragment extends Fragment  {
                 renderChatMenuUI();
             }
         };
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver, filter);
+
+        BroadcastReceiver seenReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.e("RECEIVE", "SEEN");
+                renderChatMenuUI();
+            }
+        };
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+                messageReceiver, new IntentFilter("new-message"));
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+                seenReceiver, new IntentFilter("seen"));
 
         swipeRefreshLayout = binding.getRoot().findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this::renderChatMenuUI);
