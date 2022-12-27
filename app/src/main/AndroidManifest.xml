@@ -26,6 +26,15 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.ChatApp.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.ChatApp.NoActionBar">
