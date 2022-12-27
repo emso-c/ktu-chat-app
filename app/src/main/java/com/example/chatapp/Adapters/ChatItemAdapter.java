@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapp.ChatActivity;
 import com.example.chatapp.Classes.Helpers;
+import com.example.chatapp.Classes.WebService;
 import com.example.chatapp.Models.ChatItem;
+import com.example.chatapp.Models.FirebaseUserInstance;
 import com.example.chatapp.R;
 import com.squareup.picasso.Picasso;
 
@@ -48,10 +50,14 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
             holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.blue_ultra_dark));
         }
         ChatItem chatItem = chatItemList.get(position);
-        Picasso.get()
-                .load(chatItem.profilePic)
-                .placeholder(R.drawable.ic_default_avatar)
-                .into(holder.image);
+        WebService webService = new WebService(
+                context.getString(R.string.hostname),
+                context.getString(R.string.port),
+                FirebaseUserInstance.getInstance(),
+                context
+        );
+        webService.putProfilePicture(holder.image, chatItem.uuid);
+
         holder.name.setText(chatItem.name);
         holder.last_message.setText(chatItem.lastMessage);
         holder.last_message_date.setText(Helpers.parseDate(chatItem.lastMessageDate));
