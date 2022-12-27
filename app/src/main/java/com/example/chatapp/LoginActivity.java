@@ -64,7 +64,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // EMAIL AND PASS AUTH
         btnLoginEmailPass.setOnClickListener(view -> {
             if (manager.user == null){
                 String email = editTextEmail.getText().toString();
@@ -92,29 +91,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         btnSignUpEmailPass.setOnClickListener(view -> {
-            if (manager.user == null){
-                String email = editTextEmail.getText().toString();
-                String password = editTextPassword.getText().toString();
-
-                if (email.isEmpty()){
-                    tilEmail.setError("Email cannot be empty");
-                    return;
-                }
-                if (password.isEmpty()) {
-                    tilPassword.setError("Password cannot be empty");
-                    return;
-                }
-                if (password.length() < 6) {
-                    tilPassword.setError("Password length should be at least 6");
-                    return;
-                }
-                createAccountWithEmailAndPassword(email, password);
-            } else {
-                Toast.makeText(
-                        getApplicationContext(),
-                        "Already logged in",
-                        Toast.LENGTH_SHORT).show();
-            }
+            Intent intent = new Intent(this, RegisterActivity.class);
+            startActivity(intent);
         });
 
         editTextEmail.setOnFocusChangeListener((v, hasFocus) -> {
@@ -129,27 +107,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void createAccountWithEmailAndPassword(String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "createUserWithEmail:success");
-                        manager.user = mAuth.getCurrentUser();
-                        Toast.makeText(LoginActivity.this, "Created Account",
-                                Toast.LENGTH_SHORT).show();
-                        login();
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        Toast.makeText(LoginActivity.this, "Couldn't Create Account.",
-                                Toast.LENGTH_SHORT).show();
-                        // TODO handle create user
-                        // updateUI(null);
-                    }
-                });
-    }
-
     private void signInWithEmailAndPassword(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
@@ -161,7 +118,8 @@ public class LoginActivity extends AppCompatActivity {
                         Log.w(TAG, "signInUserWithEmail:failure", task.getException());
                         Toast.makeText(LoginActivity.this, "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
-                        // TODO handle sign-in fail
+                        editTextEmail.setText("");
+                        editTextPassword.setText("");
                     }
                 });
     }
@@ -169,10 +127,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        // TODO consider storing login info in sqlite
         if(manager.user != null){
             login();
         }
-        // TODO consider storing login info in sqlite
     }
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
@@ -181,17 +139,9 @@ public class LoginActivity extends AppCompatActivity {
     );
 
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
-        IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
-            // Successfully signed in
             manager.user = FirebaseAuth.getInstance().getCurrentUser();
             login();
-            // ...
-        } else {
-            // Sign in failed. If response is null the user canceled the
-            // sign-in flow using the back button. Otherwise check
-            // response.getError().getErrorCode() and handle the error.
-            // ...
         }
     }
 
