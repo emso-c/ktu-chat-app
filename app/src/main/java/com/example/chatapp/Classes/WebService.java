@@ -268,31 +268,6 @@ public class WebService {
         return new ChatHistory(messages, chatItem);
     }
 
-    public WebServiceUser getUserByID(int id){
-        Response response = handler.get("get-user-by-id", "_id="+ id);
-        WebServiceUser user = new WebServiceUser();
-
-        try {
-            assert response.body() != null;
-            String jsonString = response.body().string();
-            JSONObject jsonObject = new JSONObject(jsonString);
-            user.id = jsonObject.getInt("id");
-            user.username = jsonObject.getString("name");
-            user.password = jsonObject.getString("password");
-            user.firebaseUid = jsonObject.getString("firebase_uid");
-            user.lastSeen = jsonObject.getString("last_seen");
-            user.photoUrl = jsonObject.getString("photo_url");
-            user.isOnline = Boolean.valueOf(jsonObject.getString("is_online"));
-            user.isTyping = Boolean.valueOf(jsonObject.getString("is_typing"));
-            user.status = jsonObject.getString("status");
-
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-
-        return user;
-    }
-
     public WebServiceUser getUserByUsername(String username){
         Response response = handler.get("get-user-by-username", "username=" + username);
         WebServiceUser user = new WebServiceUser();
@@ -308,7 +283,7 @@ public class WebService {
             user.lastSeen = jsonObject.getString("last_seen");
             user.photoUrl = jsonObject.getString("photo_url");
             user.isOnline = jsonObject.getString("is_online").equals("1");
-            user.isTyping = Boolean.valueOf(jsonObject.getString("is_typing"));
+            user.isTyping = jsonObject.getString("is_typing").equals("1");
             user.status = jsonObject.getString("status");
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -347,7 +322,7 @@ public class WebService {
                     }
                     else if (event.equals("seen")){
                         Log.d("SSE", "onSeen: " + message);
-                        Intent intent = new Intent("new-message");
+                        Intent intent = new Intent("seen");
                         intent.putExtra("message", "seen");
                         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                     }
