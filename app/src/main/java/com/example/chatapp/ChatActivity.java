@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +37,9 @@ public class ChatActivity extends AppCompatActivity {
 
     private WebServiceUser user;
     private WebService webService;
+    int searchIndex = 0;
     ArrayList<WebServiceMessage> chatMessages = new ArrayList<>();
+    ArrayList<WebServiceMessage> foundMessages = new ArrayList<>();
 
     private Handler handler;
     private Runnable updateUITask;
@@ -42,6 +48,10 @@ public class ChatActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     TextView title;
     TextView subTitle;
+    SearchView searchView;
+    LinearLayout userInfoGroupLayout;
+    ImageView searchBarUpButton;
+    ImageView searchBarDownButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +129,82 @@ public class ChatActivity extends AppCompatActivity {
         };
         renderAppbar(user, updateUITask);
         fetchMessages();
+
+        searchBarUpButton = (ImageView) findViewById(R.id.search_bar_up_button);
+        searchBarDownButton = findViewById(R.id.search_bar_down_button);
+
+        searchView = findViewById(R.id.search_chat_menu);
+        userInfoGroupLayout = findViewById(R.id.user_info_group_layout);
+        searchView.setOnSearchClickListener(view -> {
+            userInfoGroupLayout.setVisibility(View.GONE);
+            searchBarUpButton.setVisibility(View.VISIBLE);
+            searchBarDownButton.setVisibility(View.VISIBLE);
+        });
+        searchView.setOnCloseListener(() -> {
+            userInfoGroupLayout.setVisibility(View.VISIBLE);
+            searchBarUpButton.setVisibility(View.GONE);
+            searchBarDownButton.setVisibility(View.GONE);
+            return false;
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!query.isEmpty()) {
+                    foundMessages = findMessages(query);
+                    if(foundMessages.size() > 0){
+                        searchIndex = foundMessages.size()-1;
+                        recyclerView.smoothScrollToPosition(findChatMessageIndex());
+                    } else {
+                        Toast.makeText(ChatActivity.this, "No matching messages found", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        searchBarDownButton.setOnClickListener(view -> {
+            if(foundMessages.size() <= 0 )
+                return;
+            if(searchIndex == foundMessages.size()-1){
+                Toast.makeText(this, "No matching messages below", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            searchIndex += 1;
+            recyclerView.smoothScrollToPosition(findChatMessageIndex());
+        });
+        searchBarUpButton.setOnClickListener(view -> {
+            if(foundMessages.size() <= 0 )
+                return;
+            if(searchIndex == 0){
+                Toast.makeText(this, "No matching messages above", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            searchIndex -= 1;
+            recyclerView.smoothScrollToPosition(findChatMessageIndex());
+        });
         recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+    }
+
+    private int findChatMessageIndex(){
+        WebServiceMessage msg = foundMessages.get(searchIndex);
+        for(int i = 0; i < chatMessages.size(); i++){
+            if(chatMessages.get(i).id == msg.id)
+                return i;
+        }
+        return -1;
+    }
+
+    private ArrayList<WebServiceMessage> findMessages(String query){
+        ArrayList<WebServiceMessage> foundmessages = new ArrayList<>();
+        for (WebServiceMessage message: chatMessages){
+            if(message.content.contains(query)){
+                foundmessages.add(message);
+            }
+        }
+        return foundmessages;
     }
 
     private void renderAppbar(WebServiceUser user, Runnable runnable){
