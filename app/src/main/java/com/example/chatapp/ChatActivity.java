@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -64,9 +65,8 @@ public class ChatActivity extends AppCompatActivity {
         user = webService.getUserByUsername(username);
         title = findViewById(R.id.toolbar_title);
         subTitle = findViewById(R.id.toolbar_subtitle);
-
-        //ImageView profilePic = findViewById(R.id.chat_profile_picture);
-        //profilePic.setImageResource(R.drawable.ic_default_avatar);
+        ImageView imageView = findViewById(R.id.chat_profile_picture);
+        webService.putProfilePicture(imageView, webService.getUserByUsername(username).firebaseUid);
         toolbar.setNavigationOnClickListener(v -> finish());
 
 
