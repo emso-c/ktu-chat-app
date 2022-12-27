@@ -3,6 +3,7 @@ package com.example.chatapp.Classes;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -12,8 +13,11 @@ import com.example.chatapp.Models.FirebaseUserInstance;
 import com.example.chatapp.Models.WebServiceMessage;
 import com.example.chatapp.Models.WebServiceUser;
 import com.example.chatapp.R;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.here.oksse.OkSse;
 import com.here.oksse.ServerSentEvent;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -120,6 +124,16 @@ public class WebService {
         return false;
     }
 
+    public Response updateUser(String status, String username, String password, String photoUrl){
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("id", String.valueOf(webServiceUser.id));
+        queryParams.put("status", status);
+        queryParams.put("username", username);
+        queryParams.put("password", password);
+        queryParams.put("photo_url", photoUrl);
+        return handler.post("update-user", queryParams);
+    }
+
     public Response sendMessage(String toID, String content){
         if (content.isEmpty()){
             Log.e("ChatService|SendMsg:", "Empty message");
@@ -150,6 +164,7 @@ public class WebService {
             user.username = jsonObject.getString("name");
             user.password = jsonObject.getString("password");
             user.firebaseUid = jsonObject.getString("firebase_uid");
+            user.status = jsonObject.getString("status");
         } catch (IOException | JSONException e) {
             e.printStackTrace();
             return null;
@@ -358,5 +373,27 @@ public class WebService {
                 return null;
             }
         });
+    }
+
+    public void putProfilePicture(ImageView imageView){
+        try{
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            storageRef.child("profile_photos/"+webServiceUser.firebaseUid).getDownloadUrl().addOnSuccessListener(uri -> {
+                Picasso.get()
+                        .load(uri)
+                        .placeholder(R.drawable.ic_default_avatar)
+                        .into(imageView);
+            }).addOnFailureListener(exception -> {
+                Log.e("ERROR PP DOWNLOAD INS", exception.toString());
+            });
+        } catch (Exception e){
+            e.printStackTrace();
+            Log.e("ERROR DOWNLOADING IMAGE", e.toString());
+        }
+    }
+
+    private void getProfilePicture() {
+
     }
 }
