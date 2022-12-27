@@ -16,8 +16,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,11 +41,13 @@ public class ChatFragment extends Fragment  {
 
     FragmentChatBinding binding;
     ArrayList<ChatItem> chatItemArrayList = new ArrayList<>();
+    ArrayList<ChatItem> chatItemArrayListFull = new ArrayList<>();
     WebService webService;
 
     ChatItemAdapter adapter;
     LinearLayoutManager layoutManager;
     SwipeRefreshLayout swipeRefreshLayout;
+    SearchView searchView;
 
 
     @Override
@@ -103,11 +104,31 @@ public class ChatFragment extends Fragment  {
 
         swipeRefreshLayout = binding.getRoot().findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this::renderChatMenuUI);
+
+        searchView = getActivity().findViewById(R.id.search_chat_menu);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()) {
+                    Log.e("EVENT", "newText isEmpty");
+                    adapter.clearFilter(chatItemArrayListFull);
+                } else {
+                    Log.e("EVENT", "newText isNOTEmpty");
+                    adapter.filter(newText, chatItemArrayListFull);
+                }
+                return false;
+            }
+        });
         return binding.getRoot();
     }
 
     public void renderChatMenuUI(){
         chatItemArrayList.clear();
+        chatItemArrayListFull.clear();
         ArrayList<ChatHistory> chatHistoryArrayList = webService.getChatHistoryArray();
         Collections.sort(chatHistoryArrayList, new ChatHistoryComparator());
         for (ChatHistory chatHistory: chatHistoryArrayList){
@@ -127,6 +148,7 @@ public class ChatFragment extends Fragment  {
                     )
             );
         }
+        chatItemArrayListFull.addAll(chatItemArrayList);
         adapter.notifyDataSetChanged();
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(false);
