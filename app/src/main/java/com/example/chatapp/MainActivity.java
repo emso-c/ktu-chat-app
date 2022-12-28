@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = binding.tabs;
         tabs.setupWithViewPager(viewPager);
-        FloatingActionButton fab = binding.fab;
 
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setTabTextColors(
@@ -47,13 +46,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setSelectedTabIndicatorColor(
                 getResources().getColor(R.color.blue_ultra_light)
         );
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
     @Override
