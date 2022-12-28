@@ -105,6 +105,8 @@ public class WebService {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 WebServiceUser user = new WebServiceUser();
                 user.id = jsonObject.getInt("id");
+                if (user.id == webServiceUser.id)
+                    continue;
                 user.username = jsonObject.getString("name");
                 user.password = jsonObject.getString("password");
                 user.firebaseUid = jsonObject.getString("firebase_uid");
