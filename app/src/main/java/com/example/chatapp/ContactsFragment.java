@@ -62,6 +62,8 @@ public class ContactsFragment extends Fragment {
         swipeRefreshLayout = binding.getRoot().findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this::renderUserMenuUI);
 
+        /*
+        // Doesn't work + clashes with chats view listener
         searchView = getActivity().findViewById(R.id.search_chat_menu);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -70,6 +72,7 @@ public class ContactsFragment extends Fragment {
             }
             @Override
             public boolean onQueryTextChange(String newText) {
+                Log.e("CONTACTS", "typing");
                 if (newText.isEmpty()) {
                     adapter.clearFilter(webServiceUserArrayListFull);
                 } else {
@@ -78,6 +81,7 @@ public class ContactsFragment extends Fragment {
                 return false;
             }
         });
+         */
         return binding.getRoot();
     }
 
