@@ -82,7 +82,6 @@ public class WebService {
         queryParams.put("username", username);
         queryParams.put("password", password);
         Response response = handler.post("login", queryParams);
-
         try {
             assert response.body() != null;
             String jsonString = response.body().string();
@@ -90,9 +89,36 @@ public class WebService {
             String message = jsonObject.getString("message");
             return message.equals("Login successful");
         } catch (IOException | JSONException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return false;
+    }
+
+    public ArrayList<WebServiceUser> getContacts(){
+        Response response = handler.get("users", "");
+        ArrayList<WebServiceUser> users = new ArrayList<>();
+        try {
+            assert response.body() != null;
+            String jsonString = response.body().string();
+            JSONArray jsonArray = new JSONArray(jsonString);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                WebServiceUser user = new WebServiceUser();
+                user.id = jsonObject.getInt("id");
+                user.username = jsonObject.getString("name");
+                user.password = jsonObject.getString("password");
+                user.firebaseUid = jsonObject.getString("firebase_uid");
+                user.lastSeen = jsonObject.getString("last_seen");
+                user.photoUrl = jsonObject.getString("photo_url");
+                user.isOnline = jsonObject.getString("is_online").equals("1");
+                user.isTyping = jsonObject.getString("is_typing").equals("1");
+                user.status = jsonObject.getString("status");
+                users.add(user);
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 
     public void setSeen(int id){
