@@ -163,7 +163,7 @@
             android:id="@+id/image_view_update"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/ic_camera"
+            android:background="@drawable/camera"
             android:layout_marginStart="146dp"
             android:layout_marginTop="120dp">
 
