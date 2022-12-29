@@ -18,13 +18,13 @@ import com.example.chatapp.Adapters.UserItemAdapter;
 import com.example.chatapp.Classes.WebService;
 import com.example.chatapp.Models.FirebaseUserInstance;
 import com.example.chatapp.Models.WebServiceUser;
-import com.example.chatapp.databinding.FragmentStatusBinding;
+import com.example.chatapp.databinding.FragmentContactBinding;
 
 import java.util.ArrayList;
 
 public class ContactsFragment extends Fragment {
 
-    FragmentStatusBinding binding;
+    FragmentContactBinding binding;
     ArrayList<WebServiceUser> webServiceUserArrayList = new ArrayList<>();
     ArrayList<WebServiceUser> webServiceUserArrayListFull = new ArrayList<>();
     WebService webService;
@@ -43,7 +43,7 @@ public class ContactsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentStatusBinding.inflate(inflater, container, false);
+        binding = FragmentContactBinding.inflate(inflater, container, false);
 
         adapter = new UserItemAdapter(webServiceUserArrayList, getContext());
         binding.userRecyclerView.setAdapter(adapter);
