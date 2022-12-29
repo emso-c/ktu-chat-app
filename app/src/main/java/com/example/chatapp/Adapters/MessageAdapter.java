@@ -106,6 +106,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
          public void onClick(View view) {
             if(chatMessages.get(getAdapterPosition()).content.endsWith(".jpg")){
                 Intent intent = new Intent(context, FullscreenImageActivity.class);
+                intent.putExtra("folder", "images");
                 intent.putExtra("image_url", messageTextView.getText().toString());
                 context.startActivity(intent);
             }

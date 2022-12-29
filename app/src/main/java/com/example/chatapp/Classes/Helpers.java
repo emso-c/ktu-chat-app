@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class Helpers {
     public static String parseDate(String inputDate) {
@@ -124,5 +125,18 @@ public class Helpers {
     }
     public static String parseSeenText(Boolean isSeen){
         return (isSeen)?"✔✔":"✔";
+    }
+
+    public static int getHoursPassed(String inputDate) {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+        try {
+            Date inputDateObject = inputFormat.parse(inputDate);
+            long differenceInMilliseconds = System.currentTimeMillis() - inputDateObject.getTime();
+            long differenceInHours = TimeUnit.MILLISECONDS.toHours(differenceInMilliseconds);
+            return (int) differenceInHours;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 }

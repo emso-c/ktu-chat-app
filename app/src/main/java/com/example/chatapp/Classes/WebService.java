@@ -11,6 +11,7 @@ import com.example.chatapp.Models.ChatHistory;
 import com.example.chatapp.Models.ChatItem;
 import com.example.chatapp.Models.FirebaseUserInstance;
 import com.example.chatapp.Models.WebServiceMessage;
+import com.example.chatapp.Models.WebServiceStatus;
 import com.example.chatapp.Models.WebServiceUser;
 import com.example.chatapp.R;
 import com.google.firebase.storage.FirebaseStorage;
@@ -48,6 +49,33 @@ public class WebService {
                 throw new RuntimeException("Could not register new firebase user");
         }
         this.login(webServiceUser.username, webServiceUser.password);
+    }
+    public ArrayList<WebServiceStatus> getStatuses(){
+        Response response = handler.get("statuses", "");
+        ArrayList<WebServiceStatus> statuses = new ArrayList<>();
+        try {
+            assert response.body() != null;
+            String jsonString = response.body().string();
+            JSONArray jsonArray = new JSONArray(jsonString);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                WebServiceStatus status = new WebServiceStatus();
+                status.id = jsonObject.getInt("id");
+                status.user_id = jsonObject.getString("user_id");
+                status.image_url = jsonObject.getString("image_url");
+                status.date = jsonObject.getString("date");
+                statuses.add(status);
+            }
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return statuses;
+    }
+    public void deleteStatus(String id){
+        handler.get("delete-status", "_id="+id);
+    }
+    public void addStatus(String user_id, String image_url){
+        handler.get("add-status", "_id="+user_id+"&image_url="+image_url);
     }
 
     public Boolean register(String username, String password, String uid){
@@ -335,6 +363,29 @@ public class WebService {
         return user;
     }
 
+    public WebServiceUser getUserById(String id){
+        Response response = handler.get("get-user-by-id", "_id=" + id);
+        WebServiceUser user = new WebServiceUser();
+
+        try {
+            assert response.body() != null;
+            String jsonString = response.body().string();
+            JSONObject jsonObject = new JSONObject(jsonString);
+            user.id = jsonObject.getInt("id");
+            user.username = jsonObject.getString("name");
+            user.password = jsonObject.getString("password");
+            user.firebaseUid = jsonObject.getString("firebase_uid");
+            user.lastSeen = jsonObject.getString("last_seen");
+            user.photoUrl = jsonObject.getString("photo_url");
+            user.isOnline = jsonObject.getString("is_online").equals("1");
+            user.isTyping = jsonObject.getString("is_typing").equals("1");
+            user.status = jsonObject.getString("status");
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     public void listen_messages(Context context){
         // source: https://www.youtube.com/watch?v=p0E3vNY1jtE
         String url = this.context.getString(R.string.hostname)+":"+context.getString(R.string.port)+"/message-stream?_id="+ webServiceUser.id;
@@ -427,6 +478,10 @@ public class WebService {
 
     public static void putImageMessage(ImageView imageView, String filename){
         putImage(imageView, "images", filename, R.drawable.ktu_amblem);
+    }
+
+    public static void putStatus(ImageView imageView, String filename){
+        putImage(imageView, "statuses", filename, R.drawable.ktu_amblem);
     }
 
     private static void putImage(ImageView imageView, String folder, String filename, int placeholderDrawable){

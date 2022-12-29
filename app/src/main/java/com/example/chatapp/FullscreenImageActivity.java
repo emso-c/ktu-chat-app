@@ -18,8 +18,15 @@ public class FullscreenImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fullscreen_image);
 
         String imageUrl = getIntent().getStringExtra("image_url");
+        String folder = getIntent().getStringExtra("folder");
         imageView = findViewById(R.id.fullscreen_image_view);
-        WebService.putImageMessage(imageView, imageUrl);
+
+        if (folder.equals("statuses")){
+            WebService.putStatus(imageView, imageUrl);
+        }
+        if (folder.equals("images")){
+            WebService.putImageMessage(imageView, imageUrl);
+        }
     }
 
     @Override

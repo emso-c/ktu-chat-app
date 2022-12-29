@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.example.chatapp.ChatFragment;
 import com.example.chatapp.R;
 import com.example.chatapp.ContactsFragment;
+import com.example.chatapp.StatusFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -19,7 +20,7 @@ import com.example.chatapp.ContactsFragment;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2, R.string.tab_text_3};
     private final Context mContext;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
@@ -31,7 +32,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0: return new ChatFragment();
-            case 1: return new ContactsFragment();
+            case 1: return new StatusFragment();
+            case 2: return new ContactsFragment();
             default: return null; // TODO raises exception, catch err?
         }
     }
@@ -44,6 +46,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 }
