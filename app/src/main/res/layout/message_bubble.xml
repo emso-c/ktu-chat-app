@@ -11,7 +11,7 @@
     android:layout_marginHorizontal="9dp"
     android:layout_marginVertical="7dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="2dp"
@@ -25,12 +25,24 @@
             android:textColor="@color/white"
             android:maxLines="30"
             android:padding="5dp"
-            android:maxWidth="270dp"
-            android:minWidth="100dp"
             android:text="Sample message"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:maxWidth="300dp"
+            android:minWidth="100dp"
+            android:visibility="visible"/>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/message_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ktu_amblem"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            android:maxWidth="300dp"
+            android:minWidth="100dp"
+            android:adjustViewBounds="true"/>
+
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
