@@ -103,7 +103,7 @@ public class ProfileActivity extends AppCompatActivity {
             webService.updateUser(status, name, password, "");
             recreate();
         });
-        imageViewUpdate.setOnClickListener(view -> openSomeActivityForResult());
+        imageViewUpdate.setOnClickListener(view -> openImageActivityResult());
 
         editTextName.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
@@ -139,13 +139,13 @@ public class ProfileActivity extends AppCompatActivity {
         webService.putProfilePicture(imageViewPhoto);
     }
 
-    public void openSomeActivityForResult() {
+    public void openImageActivityResult() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        someActivityResultLauncher.launch(intent);
+        imageActivityResultLauncher.launch(intent);
     }
 
-    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+    ActivityResultLauncher<Intent> imageActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {

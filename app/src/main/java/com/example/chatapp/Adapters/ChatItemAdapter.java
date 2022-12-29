@@ -76,19 +76,19 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
                 FirebaseUserInstance.getInstance(),
                 context
         );
-        webService.putProfilePicture(holder.image, chatItem.uuid);
+        WebService.putProfilePicture(holder.image, chatItem.uuid);
 
         holder.name.setText(chatItem.name);
-        holder.last_message.setText(chatItem.lastMessage);
         holder.last_message_date.setText(Helpers.parseDate(chatItem.lastMessageDate));
-        Log.e("ONADAPTER", chatItem.unseenMessages);
-        if (!chatItem.unseenMessages.equals("0")){
-            Log.e("ONADAPTER", "SHOWING UNSEEN");
-            holder.unseen_messages.setText(chatItem.unseenMessages);
-        } else {
-            Log.e("ONADAPTER", "HIDING UNSEEN");
-            holder.unseen_messages.setVisibility(View.INVISIBLE);
+        if (chatItem.lastMessage.endsWith(".jpg"))
+            holder.last_message.setText("Sent a photo");
+        else{
+            holder.last_message.setText(chatItem.lastMessage);
         }
+        if (!chatItem.unseenMessages.equals("0"))
+            holder.unseen_messages.setText(chatItem.unseenMessages);
+        else
+            holder.unseen_messages.setVisibility(View.INVISIBLE);
         holder.unseen_messages.requestLayout();
     }
 
@@ -116,7 +116,7 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-            TextView textView = (TextView) v.findViewById(R.id.user_name);
+            TextView textView = v.findViewById(R.id.user_name);
             String user_name = textView.getText().toString();
 
             Intent intent = new Intent(context, ChatActivity.class);

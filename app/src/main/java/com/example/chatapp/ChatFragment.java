@@ -139,7 +139,7 @@ public class ChatFragment extends Fragment  {
                     new ChatItem(
                             chatHistory.chatInfo.id,
                             chatHistory.chatInfo.uuid,
-                            "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+                            "",
                             chatHistory.chatInfo.name,
                             chatHistory.chatInfo.lastMessage,
                             chatHistory.chatInfo.lastMessageDate,

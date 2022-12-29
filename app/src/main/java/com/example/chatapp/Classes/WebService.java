@@ -421,25 +421,28 @@ public class WebService {
         }
     }
 
-    public void putProfilePicture(ImageView imageView, String firebase_uid){
+    public static void putProfilePicture(ImageView imageView, String firebase_uid){
+        putImage(imageView, "profile_photos", firebase_uid, R.drawable.ic_default_avatar);
+    }
+
+    public static void putImageMessage(ImageView imageView, String filename){
+        putImage(imageView, "images", filename, R.drawable.ktu_amblem);
+    }
+
+    private static void putImage(ImageView imageView, String folder, String filename, int placeholderDrawable){
         try{
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
-            storageRef.child("profile_photos/"+firebase_uid).getDownloadUrl().addOnSuccessListener(uri -> {
-                Picasso.get()
-                        .load(uri)
-                        .placeholder(R.drawable.ic_default_avatar)
-                        .into(imageView);
-            }).addOnFailureListener(exception -> {
-                Log.e("ERROR PP DOWNLOAD INS", exception.toString());
-            });
+            storageRef.child(folder+"/"+filename).getDownloadUrl().addOnSuccessListener(
+                    uri -> Picasso.get()
+                            .load(uri)
+                            .placeholder(placeholderDrawable)
+                            .into(imageView))
+                    .addOnFailureListener(exception -> {
+                        Log.e("ERROR", "FIREBASE IMG DOWNLOAD");
+                    });
         } catch (Exception e){
-            e.printStackTrace();
-            Log.e("ERROR DOWNLOADING IMAGE", e.toString());
+            Log.e("FATAL", "ERR FIREBASE IMG DOWNLOAD");
         }
-    }
-
-    private void getProfilePicture() {
-
     }
 }

@@ -5,12 +5,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapp.Classes.Helpers;
+import com.example.chatapp.Classes.WebService;
 import com.example.chatapp.Models.FirebaseUserInstance;
 import com.example.chatapp.Models.WebServiceMessage;
 import com.example.chatapp.R;
@@ -65,26 +67,36 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }
         WebServiceMessage webServiceMessage = chatMessages.get(position);
         holder.bind(webServiceMessage);
-
     }
 
      class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         private final TextView messageTextView;
         private final TextView messageDateTextView;
         private final TextView seenInfoTextView;
+        private final ImageView messagePhotoImageView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             messageTextView = itemView.findViewById(R.id.message_text);
             messageDateTextView = itemView.findViewById(R.id.message_date);
             seenInfoTextView = itemView.findViewById(R.id.seen_info);
+            messagePhotoImageView = itemView.findViewById(R.id.message_photo);
             itemView.setOnLongClickListener(this);
         }
 
         void bind(WebServiceMessage webServiceMessage) {
-            messageTextView.setText(webServiceMessage.content);
-            messageDateTextView.setText(Helpers.parseMessageDate(webServiceMessage.date));
-            seenInfoTextView.setText(Helpers.parseSeenText(webServiceMessage.seen));
+            if(webServiceMessage.content.endsWith(".jpg")){
+                WebService.putImageMessage(messagePhotoImageView, webServiceMessage.content);
+                messagePhotoImageView.setVisibility(View.VISIBLE);
+                messageTextView.setVisibility(View.GONE);
+            } else {
+                messageTextView.setText(webServiceMessage.content);
+                messageDateTextView.setText(Helpers.parseMessageDate(webServiceMessage.date));
+                seenInfoTextView.setText(Helpers.parseSeenText(webServiceMessage.seen));
+
+                messageTextView.setVisibility(View.VISIBLE);
+                messagePhotoImageView.setVisibility(View.GONE);
+            }
         }
 
          @Override

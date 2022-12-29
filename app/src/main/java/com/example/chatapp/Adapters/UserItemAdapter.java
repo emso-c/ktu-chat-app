@@ -75,7 +75,7 @@ public class UserItemAdapter extends RecyclerView.Adapter<UserItemAdapter.ViewHo
                 FirebaseUserInstance.getInstance(),
                 context
         );
-        webService.putProfilePicture(holder.imageViewProfilePhoto, user.firebaseUid);
+        WebService.putProfilePicture(holder.imageViewProfilePhoto, user.firebaseUid);
 
         holder.textViewUsername.setText(user.username);
 

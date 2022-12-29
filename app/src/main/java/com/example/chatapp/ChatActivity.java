@@ -1,7 +1,9 @@
 package com.example.chatapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -14,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -28,9 +32,13 @@ import com.example.chatapp.Models.ChatHistory;
 import com.example.chatapp.Models.FirebaseUserInstance;
 import com.example.chatapp.Models.WebServiceMessage;
 import com.example.chatapp.Models.WebServiceUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.UUID;
 
 public class ChatActivity extends AppCompatActivity {
     private static final int UI_UPDATE_INTERVAL = 3000; // 1 second
@@ -52,6 +60,8 @@ public class ChatActivity extends AppCompatActivity {
     LinearLayout userInfoGroupLayout;
     ImageView searchBarUpButton;
     ImageView searchBarDownButton;
+    Button photoButton;
+    Button sendButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +86,7 @@ public class ChatActivity extends AppCompatActivity {
         title = findViewById(R.id.toolbar_title);
         subTitle = findViewById(R.id.toolbar_subtitle);
         ImageView imageView = findViewById(R.id.chat_profile_picture);
-        webService.putProfilePicture(imageView, webService.getUserByUsername(username).firebaseUid);
+        WebService.putProfilePicture(imageView, webService.getUserByUsername(username).firebaseUid);
         toolbar.setNavigationOnClickListener(v -> finish());
 
 
@@ -85,10 +95,11 @@ public class ChatActivity extends AppCompatActivity {
         messageAdapter = new MessageAdapter(chatMessages, this);
         recyclerView.setAdapter(messageAdapter);
 
-        Button sendButton = findViewById(R.id.send_button);
+        sendButton = findViewById(R.id.send_button);
+        photoButton = findViewById(R.id.photo_button);
         EditText msgInputEditText = findViewById(R.id.message_input);
-        msgInputEditText.setOnFocusChangeListener((view, b) -> recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1));
 
+        msgInputEditText.setOnFocusChangeListener((view, b) -> recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1));
         msgInputEditText.addTextChangedListener(new TextWatcher() {
             boolean lock = false;
             @Override
@@ -107,7 +118,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
         });
-
         sendButton.setOnClickListener(view -> {
             String text = String.valueOf(msgInputEditText.getText());
             if (text.isEmpty())
@@ -117,6 +127,7 @@ public class ChatActivity extends AppCompatActivity {
             SoundManager.makeSound(this);
             renderChatUI();
         });
+        photoButton.setOnClickListener(view -> openImageActivityResult());
 
         handler = new Handler();
         updateUITask = new Runnable() {
@@ -130,7 +141,7 @@ public class ChatActivity extends AppCompatActivity {
         renderAppbar(user, updateUITask);
         fetchMessages();
 
-        searchBarUpButton = (ImageView) findViewById(R.id.search_bar_up_button);
+        searchBarUpButton = findViewById(R.id.search_bar_up_button);
         searchBarDownButton = findViewById(R.id.search_bar_down_button);
 
         searchView = findViewById(R.id.search_chat_menu);
@@ -187,6 +198,34 @@ public class ChatActivity extends AppCompatActivity {
         });
         recyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
     }
+    public void openImageActivityResult() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        imageActivityResultLauncher.launch(intent);
+    }
+    ActivityResultLauncher<Intent> imageActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    Uri selectedImageUri = data.getData();
+                    String randomUUID = UUID.randomUUID().toString();
+
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageRef = storage.getReference();
+                    StorageReference ref = storageRef.child("images/"+randomUUID+".jpg");
+
+                    UploadTask uploadTask = ref.putFile(selectedImageUri);
+                    uploadTask.addOnFailureListener(exception -> {
+                        // Handle unsuccessful uploads here
+                    }).addOnSuccessListener(taskSnapshot -> {
+                        String text = taskSnapshot.getMetadata().getName();
+                        webService.sendMessage(String.valueOf(user.id), randomUUID+".jpg");
+                        SoundManager.makeSound(this);
+                        renderChatUI();
+                    });
+                }
+            });
 
     private int findChatMessageIndex(){
         WebServiceMessage msg = foundMessages.get(searchIndex);
@@ -233,8 +272,8 @@ public class ChatActivity extends AppCompatActivity {
         }
         if (chatMessages.size() > oldChatMessageSize){
             recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+            messageAdapter.notifyDataSetChanged();
         }
-        messageAdapter.notifyDataSetChanged();
     }
     @SuppressLint("NotifyDataSetChanged")
     public void renderChatUI(){
