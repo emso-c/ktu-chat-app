@@ -40,6 +40,7 @@
             android:visibility="gone"
             android:maxWidth="300dp"
             android:minWidth="100dp"
+            android:maxHeight="400dp"
             android:adjustViewBounds="true"/>
 
     </RelativeLayout>

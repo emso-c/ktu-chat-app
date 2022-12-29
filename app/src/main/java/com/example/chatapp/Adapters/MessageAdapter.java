@@ -2,6 +2,7 @@ package com.example.chatapp.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapp.Classes.Helpers;
 import com.example.chatapp.Classes.WebService;
+import com.example.chatapp.FullscreenImageActivity;
 import com.example.chatapp.Models.FirebaseUserInstance;
 import com.example.chatapp.Models.WebServiceMessage;
 import com.example.chatapp.R;
@@ -69,7 +71,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.bind(webServiceMessage);
     }
 
-     class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private final TextView messageTextView;
         private final TextView messageDateTextView;
         private final TextView seenInfoTextView;
@@ -82,6 +84,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             seenInfoTextView = itemView.findViewById(R.id.seen_info);
             messagePhotoImageView = itemView.findViewById(R.id.message_photo);
             itemView.setOnLongClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         void bind(WebServiceMessage webServiceMessage) {
@@ -90,14 +93,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 messagePhotoImageView.setVisibility(View.VISIBLE);
                 messageTextView.setVisibility(View.GONE);
             } else {
-                messageTextView.setText(webServiceMessage.content);
                 messageDateTextView.setText(Helpers.parseMessageDate(webServiceMessage.date));
                 seenInfoTextView.setText(Helpers.parseSeenText(webServiceMessage.seen));
 
                 messageTextView.setVisibility(View.VISIBLE);
                 messagePhotoImageView.setVisibility(View.GONE);
             }
+            messageTextView.setText(webServiceMessage.content);
         }
+
+         @Override
+         public void onClick(View view) {
+            if(chatMessages.get(getAdapterPosition()).content.endsWith(".jpg")){
+                Intent intent = new Intent(context, FullscreenImageActivity.class);
+                intent.putExtra("image_url", messageTextView.getText().toString());
+                context.startActivity(intent);
+            }
+         }
 
          @Override
          public boolean onLongClick(View view) {

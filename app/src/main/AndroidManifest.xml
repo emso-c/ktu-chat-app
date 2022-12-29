@@ -22,50 +22,39 @@
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.ChatApp.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.ChatApp.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
         <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.ChatApp.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
         <activity
             android:name=".ChatActivity"
             android:exported="false"
             android:label="ChatActivity"
             android:theme="@style/Theme.ChatApp.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
         <activity
             android:name=".ProfileActivity"
             android:exported="false"
-            android:label="ChatActivity"
+            android:label="ProfileActivity"
             android:theme="@style/Theme.ChatApp.NoActionBar">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
+        </activity>
+        <activity
+            android:name=".FullscreenImageActivity"
+            android:exported="false"
+            android:label="FullscreenImageActivity"
+            android:theme="@style/Theme.ChatApp.NoActionBar">
         </activity>
     </application>
 
